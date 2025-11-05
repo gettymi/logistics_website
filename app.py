@@ -20,7 +20,7 @@ def contact():
         message = request.form.get('message')
 
         if not name or not phone or not message:
-            flash('Пожалуйста, заполните  поля', 'error')
+            flash('Будь ласка, заповніть поля', 'error')
             return redirect(url_for('contact'))
 
         text = f"📩 Новое сообщение:\n\nИмя: {name}\nEmail: {email}\nСообщение: {message} \nНомер: {phone}"
@@ -30,9 +30,9 @@ def contact():
 
         try:
             requests.post(url, data=data, timeout=5)
-            flash('Сообщение успешно отправлено!', 'success')
+            flash('Повідомлення успішно відправлено!', 'success')
         except Exception as e:
-            flash('Ошибка при отправке сообщения. Попробуйте позже.', 'error')
+            flash('Помилка при відправленні повідомлення. Спробуйте пізніше.', 'error')
             print(e)
 
         return redirect(url_for('contact'))
