@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calculate_km.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="map-section">
+  <div class="route-inputs">
+    <h2>Розрахунок відстані</h2>
+    <div id="points-list">
+      <input type="text" class="route-input" placeholder="Введіть місто або адресу">
+    </div>
+    <div class="buttons">
+      <button id="add-point" class="btn">Додати точку</button>
+      <button id="build-route" class="btn btn-accent">Побудувати маршрут</button>
+    </div>
+  </div>
+
+  <div id="map" style="width: 100%; height: 500px; margin-top: 1rem;"></div>
+  <div id="route-info" class="route-info"></div>
+</section>
+
+<!-- Твой JS должен быть загружен раньше -->
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+
+<!-- А затем Google Maps, чтобы он вызвал initMap -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&language=uk&callback=initMap"
+  async defer>
+</script>
+{% endblock %}

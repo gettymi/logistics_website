@@ -1,0 +1,70 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="ru">
+    <!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon.png') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon.png') }}">
+<link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Мой dd{% endblock %}</title>
+
+  <!-- Google Fonts (Inter) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Локальный файл стилей -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  {% block head %}{% endblock %}
+</head>
+<body class="bg-page text-base text-gray-800 min-h-screen flex flex-col">
+
+  <!-- NAVBAR -->
+  <header class="site-header">
+    <div class="container header-inner">
+     <a class="brand" href="{{ url_for('index') }}">
+  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Perevozka.ua" class="logo">
+</a>
+
+      <nav class="nav">
+        <a class="nav-link" href="{{ url_for('index') }}">Головна</a>
+        <a class="nav-link" href="{{ url_for('contact') }}">Контакти</a>
+        <a class="nav-link" href="{{ url_for('calculate_km') }}">Розрахунок відстані</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alerts">
+          {% for category, msg in messages %}
+            <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-error{% endif %}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+
+
+  <div class="footer-bottom">
+    <a>© 2025 Perevozka. Усі права захищені.</a>
+  </div>
+</footer>
+
+
+  <!-- Локальные JS-файлы -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
