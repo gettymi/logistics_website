@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html lang="ru">
     <!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon.png') }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon.png') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon.ico') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon.ico') }}">
 <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}Perevozka{% endblock %}</title>
+  <title>{% block title %}Vezemo 24{% endblock %}</title>
 
   <!-- Google Fonts (Inter) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -24,10 +24,12 @@
   <!-- NAVBAR -->
   <header class="site-header">
     <div class="container header-inner">
-     <a class="brand" href="{{ url_for('index') }}">
-  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Perevozka.ua" class="logo">
+<a class="brand" href="{{ url_for('index') }}" style="text-decoration: none;">
+  <div class="logo-wrapper">
+    <span class="text-logo">Веземо</span>
+    <div class="badge-24">24</div>
+  </div>
 </a>
-
       <nav class="nav">
         <a class="nav-link" href="{{ url_for('index') }}">Головна</a>
         <a class="nav-link" href="{{ url_for('contact') }}">Контакти</a>
@@ -58,7 +60,7 @@
 
 
   <div class="footer-bottom">
-    <a>© 2025 Perevozka. Усі права захищені.</a>
+    <p>© 2025 <strong>Веземо 24</strong>. Професійні вантажні перевезення по Києву та області.</p>
   </div>
 </footer>
 

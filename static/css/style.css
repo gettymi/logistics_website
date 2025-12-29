@@ -663,41 +663,113 @@ body{margin:0;background:var(--bg);color:var(--text);font-size:16px;line-height:
   color: #475569;
 }
 
-.cta-section .btn-primary {
+/* === REFINED PRIMARY BUTTON === */
+.btn-primary {
+  display: inline-block;
   background: var(--primary);
   color: #fff;
-  padding: 0.9rem 2rem;
-  border-radius: 2rem;
-  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 50px; /* Capsule shape looks better with the circle logo */
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-weight: 800;    /* Bold to match the logo */
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25);
   transition: all 0.3s ease;
-  box-shadow: 0 6px 18px rgba(14,165,233,0.2);
+  overflow: hidden;    /* Important for the shimmer */
 }
 
-.cta-section .btn-primary:hover {
-  background: #0284c7;
+.btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(14,165,233,0.3);
+  box-shadow: 0 12px 25px rgba(14, 165, 233, 0.4);
+  background: #0284c7;
 }
 
 .btn-primary span {
   position: relative;
   z-index: 2;
-  color: #ffffff;
-  animation: glow-soft 2s ease-in-out infinite;
+  display: inline-block;
+  /* CLEAN BEAUTY ANIMATION: Slow, elegant fade instead of scaling */
+  animation: beauty-glow 4s ease-in-out infinite;
 }
 
-/* М’яке сяйво */
-@keyframes glow-soft {
-  0%, 100% {
-    text-shadow: 0 0 4px rgba(255,255,255,0.4),
-                 0 0 8px rgba(255,255,255,0.3),
-                 0 0 12px rgba(255,255,255,0.2);
-    transform: scale(1);
+/* Beautiful, subtle glow that doesn't shake the text */
+@keyframes beauty-glow {
+  0%, 100% { 
+    opacity: 1; 
+    text-shadow: 0 0 0px rgba(255,255,255,0);
   }
-  50% {
-    text-shadow: 0 0 6px rgba(255,255,255,0.6),
-                 0 0 12px rgba(255,255,255,0.4),
-                 0 0 18px rgba(255,255,255,0.3);
-    transform: scale(1.02);
+  50% { 
+    opacity: 0.9; 
+    text-shadow: 0 0 8px rgba(255,255,255,0.5);
   }
+}
+
+/* === LOGOTYPE: BRIGHT & LIGHT GRADIENT === */
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 64px;
+  text-decoration: none;
+  overflow: visible;
+}
+
+.text-logo {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 900; 
+  font-size: 2.8rem;
+  line-height: 1;
+  
+  /* The "o" fix: padding + inline-block */
+  display: inline-block;
+  padding-right: 12px; 
+  letter-spacing: -0.04em;
+  
+  /* NEW LIGHTER GRADIENT: Medium Blue -> Sky Blue -> Light Blue */
+  background: linear-gradient(
+    to right, 
+    #3b82f6 0%,    /* Vibrant Blue */
+    #0ea5e9 50%,   /* Your Primary Blue */
+    #7dd3fc 100%   /* Very Light Sky Blue */
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Softer shadow for a lighter feel */
+  filter: drop-shadow(0 2px 4px rgba(14, 165, 233, 0.2));
+  transition: background-position 0.4s ease-out;
+}
+
+/* Hover: Shimmers to the lighter end */
+.logo-wrapper:hover .text-logo {
+  background-position: right center;
+}
+
+/* === YOUR 24 BADGE (STAYING THE SAME) === */
+.badge-24 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: var(--primary); /* #0ea5e9 */
+  color: white;
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
+  flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .logo-wrapper { gap: 8px; height: 48px; }
+  .text-logo { font-size: 2.1rem; padding-right: 8px; }
+  .badge-24 { width: 50px; height: 50px; font-size: 1.8rem; }
 }
