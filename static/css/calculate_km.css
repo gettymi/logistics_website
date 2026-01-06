@@ -1,101 +1,198 @@
-.map-section {
-  padding: 2rem 1rem;
-  max-width: 900px;
-  margin: 0 auto;
+/* Робимо контейнер на всю висоту екрану мінус хедер */
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 80px); /* 80px - висота хедера */
+  overflow: hidden;
 }
 
-.map-section h2 {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 1rem;
-  text-align: center;
+#map {
+  width: 100%;
+  height: 100%;
 }
 
-.route-inputs {
+/* Плаваюча панель */
+.control-panel {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 380px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  z-index: 10; /* Щоб була поверх карти */
+  max-height: calc(100% - 40px);
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  width: 100%;
+  gap: 1.2rem;
 }
 
-#points-list {
-  width: 100%;
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
 }
+.panel-header p {
+  margin: 5px 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Інпути */
+.inputs-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+/* Лінія, що з'єднує точки (як в Uber) */
+.inputs-stack::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 14px;
+  width: 2px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.icon-marker {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.icon-marker.start { background: #10b981; } /* Зелений */
+.icon-marker.end { background: #ef4444; }   /* Червоний */
+.icon-marker.waypoint { background: #3b82f6; width: 24px; height: 24px; margin-left: 3px; font-size: 0.7rem; }
 
 .route-input {
-  width: 90%;
-  box-sizing: border-box; /* ✅ гарантирует, что padding не режет ширину */
-  padding: 0.9rem 1rem;
-  border: 1.5px solid #d1d5db;
-  border-radius: 0.6rem;
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  flex-grow: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+  background: white;
 }
 
 .route-input:focus {
-  border-color: #0ea5e9;
-  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
-
-.route-input:focus {
-  border-color: #0ea5e9;
-  outline: none;
-}
-
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem; /* 🔥 вот ключевой отступ между кнопками */
-}
-
-.map-section .btn {
-  background: #0ea5e9;
-  color: #fff;
+/* Кнопка видалення (хрестик) */
+.remove-btn {
+  background: none;
   border: none;
-  padding: 0.7rem 1.6rem;
-  border-radius: 0.6rem;
+  color: #94a3b8;
   cursor: pointer;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: background 0.25s, transform 0.1s;
+  font-size: 1.2rem;
+  padding: 0 5px;
+}
+.remove-btn:hover { color: #ef4444; }
+
+/* Кнопки */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.map-section .btn:hover {
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.btn-text:hover { text-decoration: underline; }
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.btn-primary:hover {
   background: #0284c7;
   transform: translateY(-2px);
 }
 
-.map-section .btn-accent {
-  background: #f97316;
-}
-
-.map-section .btn-accent:hover {
-  background: #ea580c;
-}
-
-#map {
-  margin-top: 1.5rem;
-  width: 100%;
-  height: 500px;
-  border-radius: 0.8rem;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.route-info {
-  margin-top: 1.5rem;
+/* Результати */
+.result-card {
   background: #f8fafc;
-  border-radius: 0.8rem;
-  padding: 1rem 1.2rem;
-  box-shadow: inset 0 0 0 1px #e5e7eb;
-  font-size: 1rem;
-  line-height: 1.6;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 0.3s;
 }
 
-.route-info strong {
-  color: #0f172a;
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.result-item .label { color: var(--text-muted); font-size: 0.9rem; }
+.result-item .value { font-weight: 800; color: var(--text-main); }
+
+.legs-list {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.leg-row { margin-bottom: 4px; display: flex; justify-content: space-between; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Адаптив для мобільних */
+@media (max-width: 768px) {
+  .map-wrapper {
+    flex-direction: column-reverse;
+  }
+  .control-panel {
+    position: relative;
+    top: 0; left: 0;
+    width: 100%;
+    max-height: 50vh;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+    margin-top: -20px; /* Трохи наїжджає на карту */
+  }
 }

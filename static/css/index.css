@@ -1,0 +1,726 @@
+/* =========================================
+   1. UTILITIES & SECTIONS (ОБЩИЕ ОТСТУПЫ)
+   ========================================= */
+section {
+  margin-bottom:6rem; /* Отступ между секциями */
+}
+
+/* =========================================
+   1. UTILITIES & SECTIONS (ОБЩИЕ ОТСТУПЫ)
+   ========================================= */
+section {
+  margin-bottom: 6rem; /* Чуть больше воздуха между секциями */
+}
+
+/* ОБНОВЛЕННЫЙ ЗАГОЛОВОК СЕКЦИЙ */
+.section-title {
+  position: relative;
+  display: block;          /* На всю ширину */
+  text-align: center;      /* Текст по центру */
+  margin: 0 auto 3rem;     /* Отступ снизу */
+  padding: 0;
+  background: transparent; /* Убираем фон-капсулу */
+  
+  /* Типографика */
+  font-size: 2.25rem;      /* Крупно и солидно */
+  font-weight: 800;        /* Жирно */
+  color: var(--text-main); /* Темный цвет (почти черный) */
+  letter-spacing: -0.5px;  /* Чуть плотнее буквы */
+}
+
+/* Аккуратная синяя линия под заголовком */
+.section-title::after {
+  content: "";
+  display: block;
+  width: 80px;             /* Ширина линии */
+  height: 4px;             /* Толщина линии */
+  background: var(--primary);
+  margin: 16px auto 0;     /* Отступ от текста до линии */
+  border-radius: 2px;
+}
+
+/* АДАПТИВНОСТЬ ЗАГОЛОВКА */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* =========================================
+   2. HERO SECTION (VIDEO BACKGROUND)
+   ========================================= */
+.hero-video-container {
+  /* --- BREAKOUT: ВЫРЫВАЕМСЯ ИЗ КОНТЕЙНЕРА --- */
+  width: 100vw;               /* Ширина всего окна браузера */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;         /* Центрируем после расширения */
+  margin-right: -50vw;
+  
+  /* --- ВЫСОТА И ОТСТУПЫ --- */
+  height: 85vh;               /* 85% от высоты экрана (масштабно!) */
+  min-height: 600px;          /* Чтобы на маленьких экранах не схлопнулось */
+  margin-top: -2rem;          /* Убираем верхний пробел (компенсация padding из base.css) */
+  margin-bottom: 4rem;
+  
+  /* --- ВНУТРЕННОСТИ --- */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* Видео на фоне */
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Важно: заполняет все пространство без искажений */
+  z-index: 0;
+}
+
+/* Синий фильтр (Overlay) */
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Градиент: Сверху прозрачнее, снизу темнее для читаемости */
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
+  z-index: 1;
+}
+
+/* Контент по центру */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 1.5rem;
+  /* Немного анимации появления при загрузке */
+  animation: fadeUp 1s ease-out;
+}
+
+/* Простая анимация всплытия текста */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-title {
+  font-size: 3.5rem; /* Крупнее для десктопа */
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  letter-spacing: -1px;
+}
+
+.hero-lead {
+  font-size: 1.35rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.95;
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* === BUTTONS === */
+.main-screen__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  backdrop-filter: blur(4px); /* Эффект размытия стекла */
+  transition: all 0.3s ease;
+}
+
+.btn-outline-white:hover {
+  background: #fff;
+  color: var(--primary);
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+/* === АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНОВ (ИСПРАВЛЕНО) === */
+@media only screen and (max-width: 768px) {
+  .hero-video-container {
+    /* БЫЛО: height: 100vh; - на весь экран */
+    /* СТАЛО: 60vh - 60% от высоты экрана. И минимум 500px, чтобы всё влезло. */
+    height: 60vh;
+    min-height: 500px;
+
+    /* Компенсация отступа сверху оставляем */
+    margin-top: -2rem;
+
+    /* УБРАНО: скругление углов */
+    border-radius: 0;
+  }
+
+  .hero-title {
+    font-size: 2rem; /* Чуть меньше шрифт заголовка */
+    margin-bottom: 1rem;
+  }
+
+  .hero-lead {
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Кнопки на телефоне */
+  .main-screen__buttons {
+    flex-direction: column; /* Друг под другом */
+    gap: 1rem;
+    width: 100%; /* На всю ширину контейнера */
+  }
+
+  .btn-primary, .btn-outline-white {
+    width: 100%; /* Кнопки растягиваются на всю ширину */
+    padding: 14px 20px; /* Чуть меньше отступы внутри */
+  }
+}
+/* =========================================
+   3. ADVANTAGES (ПРЕИМУЩЕСТВА)
+   ========================================= */
+.advantages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.adv-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid transparent;
+  text-align: center;
+}
+
+.adv-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(14, 165, 233, 0.2);
+}
+
+.adv-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f9ff; /* Светло-голубой круг */
+  border-radius: 50%;
+}
+
+.adv-icon img {
+  width: 32px;
+  height: 32px;
+  /* Если иконки черные, этот фильтр сделает их синими */
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(180deg) brightness(118%) contrast(119%);
+}
+
+.adv-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.adv-text {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   4. SERVICES (УСЛУГИ) - ГЕОМЕТРИЯ
+   ========================================= */
+
+.services-section {
+  position: relative;
+  background-color: #f8fafc; /* Светлый основной фон */
+  padding: 6rem 0;           /* Хорошие отступы сверху и снизу */
+  overflow: hidden;          /* Чтобы треугольники не вылезали за экран */
+  z-index: 1;
+}
+
+/* === ВЕРХНИЙ УГОЛ (СИНИЙ) === */
+.services-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 450px; /* Высота фигуры */
+  background: #0ea5e9; /* Твой основной синий */
+  
+  /* Делаем треугольник: Точка 0,0 -> 100% ширины,0 -> 0,100% высоты */
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  
+  opacity: 0.15; /* Плотность цвета (15% видимости). Хочешь ярче - ставь 0.25 */
+  z-index: -1;   /* Убираем НАЗАД, под контент */
+}
+
+/* === НИЖНИЙ УГОЛ (ЗЕРКАЛЬНЫЙ) === */
+.services-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 450px;
+  background: #0ea5e9;
+  
+  /* Делаем треугольник наоборот: справа снизу */
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  
+  opacity: 0.15;
+  z-index: -1;
+}
+
+/* === ЗАГОЛОВОК === */
+.section-title {
+  position: relative;
+  display: inline-block;
+  /* Центрирование */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background: #fff; /* Белая подложка, чтобы текст читался на фоне треугольника */
+  color: var(--text-main);
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  
+  /* Тень, чтобы выделить заголовок над геометрией */
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(14, 165, 233, 0.1);
+}
+
+/* Синяя черточка под текстом заголовка */
+.section-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--primary);
+  margin: 8px auto 0;
+  border-radius: 2px;
+}
+
+/* ... дальше идет твой .services-grid и карточки ... */
+
+/* === GRID === */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* === CARD === */
+.card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.card:hover {
+  border-color: #0ea5e9;
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.25);
+  transform: translateY(-6px);
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* === IMAGE === */
+.card-image {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.4s ease;
+}
+
+/* при наведении на карточку — оживляем фото */
+.card:hover .card-image img {
+  transform: scale(1.05);
+  filter: brightness(1.05);
+}
+
+/* спеціальний ефект для карти Києва */
+.card:nth-child(2) .card-image img {
+  filter: invert(0.05) saturate(1.3) brightness(0.95);
+}
+
+.card:nth-child(2):hover .card-image img {
+  filter: invert(0.1) saturate(1.5) brightness(1);
+}
+
+/* =========================================
+   5. REVIEWS (ВІДГУКИ) - MODERN STYLE
+   ========================================= */
+.reviews-section {
+  background: #f8fafc; /* Світлий фон */
+  padding: 4rem 0 6rem;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.review-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Шапка відгуку (Аватар + Ім'я) */
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Круглі аватарки з ініціалами */
+.review-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Різні кольори для аватарок */
+.color-1 { background: linear-gradient(135deg, #f59e0b, #d97706); } /* Оранжевий */
+.color-2 { background: linear-gradient(135deg, #3b82f6, #2563eb); } /* Синій */
+.color-3 { background: linear-gradient(135deg, #10b981, #059669); } /* Зелений */
+
+.review-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-author {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 1.05rem;
+}
+
+.review-stars {
+  color: #f59e0b; /* Золотий колір зірок */
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.review-text {
+  font-size: 1rem;
+  color: #4b5563;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* =========================================
+   6. FAQ SECTION (АККОРДЕОН)
+   ========================================= */
+.faq-section {
+  /* Breakout: Делаем секцию во всю ширину с синим фоном */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  background: linear-gradient(180deg, var(--primary) 0%, #0284c7 100%);
+  color: var(--white);
+  padding: 4rem 1.5rem;
+  margin-bottom: 0 !important;
+}
+
+.faq-section .section-title {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+
+.faq-container {
+  max-width: 800px; /* FAQ узкий для удобства чтения */
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: background 0.3s;
+}
+
+.faq-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.faq-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s;
+}
+
+/* JS добавляет класс .active */
+.faq-item.active .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  max-height: 0; /* Скрыто по умолчанию */
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  background: rgba(0,0,0,0.05);
+}
+
+.faq-item.active .faq-answer {
+  max-height: 300px; /* Достаточно для текста */
+  padding: 0 1.25rem 1.25rem;
+}
+
+/* =========================================
+   7. CTA SECTION (ФІНАЛЬНИЙ ЗАКЛИК) - 1 КНОПКА
+   ========================================= */
+.cta-section {
+  position: relative;
+  
+  /* BREAKOUT: На всю ширину */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  
+  background: #0f172a;
+  background-image: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  
+  margin-top: 0;
+  margin-bottom: 0;
+
+  margin-bottom: -2rem !important;
+  
+  padding: 6rem 0;
+  color: white;
+  overflow: hidden;
+}
+
+/* Декоративний круг */
+.cta-section::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Внутрішній контейнер */
+.cta-inner {
+  display: flex;
+  align-items: center; /* Рівно по центру вертикально */
+  
+  /* БУЛО: justify-content: space-between; (розкидало по краях) */
+  /* СТАЛО: просто flex, щоб вони були поруч, але з відступом */
+  gap: 4rem; 
+  
+  position: relative;
+  z-index: 2;
+  max-width: 1000px; /* Трохи звузимо контент, щоб було компактніше */
+  margin: 0 auto;    /* Центруємо сам блок */
+}
+
+.cta-content {
+  flex: 1; /* Текст займає весь вільний простір */
+}
+
+.cta-title {
+  color: #ffffff;
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.cta-text {
+  color: #94a3b8;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 550px; /* Обмежимо ширину тексту для читабельності */
+}
+
+/* Блок кнопки */
+.cta-buttons {
+  flex-shrink: 0; /* Щоб кнопка не стискалася */
+}
+
+/* === ВЕЛИКА КНОПКА === */
+/* Спеціальний стиль для кнопки всередині CTA */
+.cta-buttons .btn-primary {
+  padding: 18px 45px;   /* Значно більша кнопка */
+  font-size: 1.25rem;   /* Більший текст */
+  border-radius: 50px;
+  min-width: 260px;     /* Мінімальна ширина, щоб виглядала солідно */
+  text-align: center;
+  display: inline-block;
+  
+  /* Ефект світіння */
+  box-shadow: 0 0 25px rgba(14, 165, 233, 0.5); 
+}
+
+.cta-buttons .btn-primary:hover {
+  box-shadow: 0 0 40px rgba(14, 165, 233, 0.7);
+  transform: translateY(-3px);
+}
+
+
+/* === АДАПТИВ CTA === */
+@media (max-width: 900px) {
+  .cta-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .cta-inner {
+    flex-direction: column; /* Текст зверху, кнопка знизу */
+    text-align: center;
+    gap: 2rem;
+  }
+  
+  .cta-buttons {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .cta-buttons .btn-primary {
+    width: 100%; /* На телефоні кнопка на всю ширину */
+  }
+  
+  .cta-title {
+    font-size: 2.2rem;
+  }
+}
+/* =========================================
+   8. MOBILE RESPONSIVE (ТЕЛЕФОНЫ)
+   ========================================= */
+@media (max-width: 768px) {
+  /* Hero */
+  .hero-grid {
+    grid-template-columns: 1fr; /* Одна колонка */
+    text-align: center;
+    gap: 2rem;
+  }
+  
+  .hero-image {
+    order: -1; /* Картинка сверху */
+  }
+
+  .cta-row {
+    justify-content: center; /* Кнопки по центру */
+  }
+
+  .heading-lg {
+    font-size: 1.8rem; /* Меньше шрифт */
+  }
+
+  /* Секции */
+  .section-title {
+    font-size: 1.3rem;
+  }
+  
+  /* Убираем лишние отступы по краям */
+  .services-section, .faq-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

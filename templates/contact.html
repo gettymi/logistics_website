@@ -1,46 +1,58 @@
 {% extends "base.html" %}
+
+{% block title %}Зв’язатися з нами{% endblock %}
+
 {% block head %}
   {{ super() }}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
 {% endblock %}
+
 {% block content %}
-<section class="contact-page">
-  <div class="form-wrapper">
-    <h1>Зв’язатися з нами</h1>
-    <p>Залиште свої дані, і ми зв’яжемося з вами найближчим часом.</p>
-
-    <form id="contactForm" method="POST" action="/contact">
-      <div class="form-group">
-        <label for="name">Імʼя <span class="required">*</span></label>
-        <input type="text" id="name" name="name" required placeholder="Введіть ваше ім’я">
+<section class="contact-section">
+  <div class="container">
+    <div class="form-card">
+      
+      <div class="form-header">
+        <h1 class="contact-title">Зв’язатися з нами</h1>
+        <p class="contact-desc">Залиште свої дані, і ми розрахуємо вартість або відповімо на ваші запитання найближчим часом.</p>
       </div>
 
-      <div class="form-group">
-        <label for="phone">Телефон <span class="required">*</span></label>
-        <input id="phone" name="phone" type="tel" required>
-      </div>
+      <form id="contactForm" method="POST" action="/contact">
+        
+        <div class="form-group">
+          <label for="name">Імʼя <span class="required">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="Ваше ім’я" class="form-input">
+        </div>
 
-      <div class="form-group">
-        <label for="email">Електронна пошта (необов’язково)</label>
-        <input type="email" id="email" name="email" placeholder="example@gmail.com">
-      </div>
+        <div class="form-group">
+          <label for="phone">Телефон <span class="required">*</span></label>
+          <input id="phone" name="phone" type="tel" required class="form-input">
+        </div>
 
-      <div class="form-group">
-        <label for="message">Повідомлення <span class="required">*</span></label>
-        <textarea id="message" name="message" rows="4" required placeholder="Введіть повідомлення..."></textarea>
-      </div>
+        <div class="form-group">
+          <label for="email">Електронна пошта (необов’язково)</label>
+          <input type="email" id="email" name="email" placeholder="example@gmail.com" class="form-input">
+        </div>
 
-      <button type="submit" id="submitBtn" class="btn-send">Надіслати</button>
+        <div class="form-group">
+          <label for="message">Повідомлення <span class="required">*</span></label>
+          <textarea id="message" name="message" rows="4" required placeholder="Опишіть вантаж, маршрут або ваше запитання..." class="form-input"></textarea>
+        </div>
 
-      <div id="formAlert" class="alert"></div>
-    </form>
+        <button type="submit" id="submitBtn" class="btn-submit">
+          <span>Надіслати повідомлення</span>
+        </button>
+
+        <div id="formAlert" class="alert"></div>
+      </form>
+      
+    </div>
   </div>
 </section>
+{% endblock %}
 
-<!-- intl-tel-input -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
+{% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
-
-<!-- Custom validation logic -->
 <script src="{{ url_for('static', filename='js/contact.js') }}"></script>
 {% endblock %}

@@ -1,106 +1,231 @@
-.contact-page {
-  margin-top: 1.5rem;
+/* static/css/contact.css */
+
+/* === 1. ОСНОВНА СТРУКТУРА === */
+.contact-section {
+  padding: 4rem 1.5rem;
+  background: transparent; /* Фон береться з base.css (точки) */
+  min-height: 80vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 4rem 1rem;
-  background: #f9fafb;
+  align-items: flex-start;
 }
 
-.form-wrapper {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 1.25rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+.form-card {
+  background: #ffffff;
+  padding: 3rem;
+  border-radius: 1.5rem;
+  /* Гарна, м'яка тінь */
+  box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  
   max-width: 550px;
   width: 100%;
+  margin: 0 auto;
 }
 
-h1 {
-  text-align: center;
-  color: #0ea5e9;
-  margin-bottom: 0.5rem;
-}
-
-p {
+/* === 2. ТИПОГРАФІКА (Ізольована) === */
+.form-header {
   text-align: center;
   margin-bottom: 2rem;
-  color: #6b7280;
 }
 
+/* Використовуємо класи, щоб не ламати глобальні h1/p */
+.contact-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.contact-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* === 3. ПОЛЯ ВВОДУ === */
 .form-group {
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 label {
   display: block;
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  color: #374151;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 0.8rem;
-  border-radius: 0.75rem;
-  border: 1px solid #d1d5db;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus, textarea:focus {
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
-  outline: none;
-}
-
-input.error, textarea.error {
-  border-color: #dc2626;
-  box-shadow: 0 0 0 2px rgba(220,38,38,0.1);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+  font-size: 0.95rem;
 }
 
 .required {
-  color: #f97316;
+  color: #ef4444; /* Червона зірочка */
 }
 
-.btn-send {
+/* Стандартні інпути (Ім'я, Email) */
+.form-input {
   width: 100%;
-  padding: 0.9rem;
-  background: #0ea5e9;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  color: var(--text-main);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  box-sizing: border-box; /* Важливо, щоб не вилазили за межі */
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Ефект фокусу для всіх полів */
+.form-input:focus,
+.iti input:focus {
+  border-color: var(--primary) !important;
+  background: #ffffff !important;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15) !important;
+}
+
+/* === 4. ФІКС ДЛЯ ТЕЛЕФОНУ (intl-tel-input) === */
+/* Контейнер бібліотеки */
+.iti {
+  width: 100%;
+  display: block;
+}
+
+/* Сам інпут телефону всередині бібліотеки */
+.iti input {
+  width: 100% !important;
+  height: auto !important; /* Скидаємо фіксовану висоту бібліотеки */
+  
+  /* Копіюємо стилі .form-input */
+  border-radius: 12px !important;
+  border: 2px solid #e2e8f0 !important;
+  background: #f8fafc !important;
+  color: var(--text-main) !important;
+  font-size: 1rem !important;
+  font-family: inherit !important;
+  
+  /* Відступи: бібліотека сама додає padding-left для прапора,
+     тому ми задаємо тільки верх, низ і право */
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  padding-right: 16px !important;
+  /* padding-left не чіпаємо! бібліотека його розраховує JS-ом */
+  
+  transition: all 0.2s ease;
+  box-sizing: border-box !important;
+}
+
+/* Виправляємо позицію прапорця, щоб було гарно */
+.iti__flag-container {
+  border-radius: 12px 0 0 12px; /* Закруглення зліва */
+}
+
+/* Якщо бібліотека малює лінію під прапорцем, прибираємо її */
+.iti__selected-flag {
+  background-color: transparent !important;
+}
+
+/* === 5. КНОПКА === */
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary);
   color: white;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
-  border-radius: 0.75rem;
-  transition: all 0.2s;
+  border-radius: 50px;
   cursor: pointer;
-}
-
-.btn-send:hover {
-  background: #0284c7;
-}
-
-.btn-send:disabled {
-  background: #93c5fd;
-  cursor: not-allowed;
-}
-
-.alert {
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
   margin-top: 1rem;
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+}
+
+.btn-submit:hover {
+  background: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+}
+
+/* === 6. ПОВІДОМЛЕННЯ (ALERTS) === */
+.alert {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
   text-align: center;
-  display: none;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
+  display: none; /* Залишаємо прихованим, JS його покаже */
+  font-size: 0.95rem;
+  line-height: 1.4;
+  /* Анімація появи */
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Коли JS показує блок, він має стати видимим */
+.alert.success, .alert.error {
+  display: block; 
 }
 
 .alert.success {
-  display: block;
-  background: #dcfce7;
-  color: #166534;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
 }
 
 .alert.error {
-  display: block;
-  background: #fee2e2;
+  background: #fef2f2;
   color: #991b1b;
+  border: 1px solid #fca5a5;
 }
+
+/* Ефект "дискретного" вводу для всіх полів */
+.form-input, .iti input {
+    letter-spacing: 0.5px; /* Трохи розсунемо букви/цифри */
+    border: 2px solid #e2e8f0;
+    background-color: #f8fafc;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Коли поле порожнє, але обов'язкове (через JS) */
+.form-input.error, .iti input.error {
+    border-color: #ef4444 !important;
+    background-color: #fffafb !important;
+}
+
+/* Стиль при наведенні для відчуття інтерактивності */
+.form-input:hover {
+    border-color: #cbd5e1;
+}
+
+/* Стиль при фокусі - робимо рамку товстішою та яскравішою */
+.form-input:focus, .iti input:focus {
+    border-color: var(--primary) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+}
+
+/* Анімація для повідомлень */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === 7. МОБІЛЬНИЙ АДАПТИВ === */
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 2rem 1rem;
+  }
+  .form-card {
+    padding: 2rem 1.5rem;
+  }
+  .contact-title {
+    font-size: 1.75rem;
+  }
+}
+

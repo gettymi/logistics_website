@@ -1,29 +1,72 @@
 <!-- templates/index.html -->
 {% extends 'base.html' %}
-{% block title %}Головна сторінка{% endblock %}
+
+{% block title %}Вантажні перевезення Україна та Європа | Vezemo24{% endblock %}
+{% block description %}Замовити вантажне авто для переїзду, доставки товарів або меблів. Працюємо по Україні (Київ, Львів, Одеса) та Європі (Польща, Німеччина). Чесні ціни!{% endblock %}
+{% block keywords %}вантажоперевезення київ, доставка вантажів європа, квартирний переїзд, вантажне таксі, ціна за км,перевезення по області, бус оренда, грузоперевозки, переезд{% endblock %}
+
+{%block head%}   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">{%endblock%}
 
 {% block content %}
-<section class="hero">
-  <div class="hero-grid">
-    <div>
-      <h1 class="heading-lg">Ми пропонуємо надійні рішення для вас.</h1>
-      <p class="lead">Ми займаємося доставкою, перевезенням людей за кордон та грузоперевезеннями — швидкі й прозорі послуги для ваших потреб.</p>
 
-      <div class="cta-row">
-        <a href="{{ url_for('contact') }}" class="btn-primary"><span>Зв’язатися з нами</span></a>
-        <a href="{{ url_for('calculate_km') }}" class="btn-outline">Розрахунок відстані</a>
-      </div>
-    </div>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Vezemo24",
+  "image": "{{ url_for('static', filename='img/og-image.jpg', _external=True) }}",
+  "telephone": "+380970000000",
+  "email": "info@vezemo24.com",
+  "url": "{{ request.url_root }}",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Київ",
+    "addressCountry": "UA"
+  },
+  "priceRange": "$$",
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "08:00",
+    "closes": "22:00"
+  },
+  "description": "Професійні вантажні перевезення по Україні та Європі. Квартирні переїзди, комерційні вантажі, логістика під ключ."
+}
+</script>
 
-    <div class="hero-image">
-      <!-- Placeholder: можно положить изображение в static/images/services.jpg -->
-      <img src="{{ url_for('static', filename='images/services.jpg') }}" alt="Услуги" />
+<section class="hero-video-container">
+  <video autoplay muted loop playsinline class="bg-video" 
+         poster="{{ url_for('static', filename='img/video-poster.jpg') }}">
+    
+    <source src="{{ url_for('static', filename='videos/hero.mp4') }}" type="video/mp4">
+    Ваш браузер не підтримує відео.
+  </video>
+
+  <div class="video-overlay"></div>
+
+  <div class="hero-content container">
+    <h1 class="hero-title">Надійні вантажні перевезення<br>для вашого бізнесу</h1>
+    <p class="hero-lead">
+      Ми займаємося доставкою вантажів по Києву, області та Європі.
+      Швидко, прозоро та надійно.
+    </p>
+
+    <div class="main-screen__buttons">
+      <a href="{{ url_for('contact.contact') }}" class="btn-primary"><span>Зв’язатися з нами</span></a>
+      <a href="{{ url_for('main.calculate_km') }}" class="btn-outline-white">Розрахунок відстані</a>
     </div>
   </div>
 </section>
 
-<section class="advantages-section">
-  <h2 class="section-title">Наші переваги</h2>
+<section class="advantages-section">  
   <div class="advantages-grid">
 
     <div class="adv-card">
@@ -97,93 +140,121 @@
   </div>
 </section>
 
- <div class="delivery-alert">
-        <p>
-            <strong>Важливо!</strong> Доставка здійснюється по Києву та Київській області. На точну ціну впливає багато факторів, тому вона для всіх індивідуальна. Просимо сконтактуватися з нами.
-        </p>
-    </div>
 
-    <section class="reviews-section">
-  <h2 class="section-title">Відгуки клієнтів</h2>
-  <div class="reviews-grid">
-    <div class="review-card">
-      <p class="review-text">"Замовляв перевезення меблів — усе швидко, без пошкоджень, приємні хлопці!"</p>
-      <div class="review-author">— Олександр, Київ</div>
-    </div>
-    <div class="review-card">
-      <p class="review-text">"Регулярно користуюсь для доставки товарів, завжди вчасно."</p>
-      <div class="review-author">— Марина, Біла Церква</div>
-    </div>
-    <div class="review-card">
-      <p class="review-text">"Чудовий сервіс, гарна підтримка, допомогли навіть за кордон відправити."</p>
-      <div class="review-author">— Ігор, Львів</div>
+
+<section class="reviews-section">
+  <div class="container">
+    <h2 class="section-title">Відгуки клієнтів</h2>
+    
+    <div class="reviews-grid">
+      
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar color-1">О</div>
+          <div class="review-info">
+            <div class="review-author">Олексій Коваленко</div>
+            <div class="review-stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="review-text">
+          "Переїжджали з двокімнатної квартири на Позняках. Дуже переживав за скляний стіл та техніку. Хлопці приїхали вчасно, все надійно закріпили ременями в кузові. Доїхало ідеально, жодної подряпини. Дякую за акуратність!"
+        </p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar color-3">І</div>
+          <div class="review-info">
+            <div class="review-author">Ірина Ткаченко</div>
+            <div class="review-stars">★★★★★</div>
+          </div>
+        </div>
+        <p class="review-text">
+          "Потрібно було терміново відправити речі до Львова, інші перевізники відмовляли або називали космічні ціни. Тут прорахували за 10 хвилин, ввечері забрали, а зранку вантаж був уже на місці. Сервіс на висоті!"
+        </p>
+      </div>
+
     </div>
   </div>
 </section>
 
 <section class="faq-section">
-  <h2 class="section-title">Часті запитання</h2>
-  <div class="faq-container">
-    <div class="faq-item">
-      <button class="faq-question">
-        <span>🚚 Які напрямки доставки ви покриваєте?</span>
-        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="faq-answer">
-        <p>Ми працюємо по Києву, області та доставляємо по всій Україні. Міжнародні перевезення здійснюються за індивідуальною домовленістю.</p>
+  <div class="container">
+    <h2 class="section-title">Часті запитання</h2>
+    
+    <div class="faq-container">
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Чому ціна розраховується індивідуально?</span>
+          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-answer">
+          <p>Кожне перевезення унікальне: різна вага, габарити, маршрут та потреби у вантажниках. Фіксовані тарифи часто включають "приховані" переплати. Ми розраховуємо вартість саме під ваше завдання, щоб ви платили лише за те, що реально потрібно.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-question">
-        <span>💰 Як формується вартість перевезення?</span>
-        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="faq-answer">
-        <p>Ціна залежить від відстані, типу транспорту та об’єму вантажу. Ми завжди погоджуємо її до початку — без прихованих платежів.</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Які гарантії безпеки вантажу?</span>
+          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-answer">
+          <p>Ми несемо повну матеріальну відповідальність за вантаж з моменту завантаження до розвантаження. Наші автомобілі обладнані кріпильними ременями та фіксаторами, а водії мають багаторічний досвід дбайливого транспортування.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-question">
-        <span>⏰ Чи можна замовити термінову доставку?</span>
-        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="faq-answer">
-        <p>Так, ми намагаємось задовольнити термінові запити клієнтів. Просто зателефонуйте нам — знайдемо оптимальне рішення.</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Як довго чекати на відповідь або машину?</span>
+          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-answer">
+          <p>Ми цінуємо ваш час. У робочі години менеджер прораховує вартість протягом 10-15 хвилин. Подача авто можлива як "на зараз" (від 1 години по Києву), так і на заброньований час.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-question">
-        <span>📦 Чи допомагаєте з навантаженням/розвантаженням?</span>
-        <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="faq-answer">
-        <p>Так, можемо забезпечити вантажників або допомогу водія — за попереднім погодженням.</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Чи надаєте ви послуги вантажників?</span>
+          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-answer">
+          <p>Так, ми надаємо комплексну послугу. Ви можете замовити тільки авто, допомогу водія при завантаженні або повноцінну бригаду вантажників для переїзду.</p>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
 
 
-
 <section class="cta-section">
-  <div class="cta-container">
-    <h2 class="cta-title">Готові розпочати співпрацю?</h2>
-    <p class="cta-text">
-      Залиште заявку — і ми підберемо найкраще рішення для вашого перевезення.
-    </p>
-    <a href="{{ url_for('contact') }}" class="btn-primary"><span>Залишити заявку</span></a>
+  <div class="container">
+    <div class="cta-inner">
+      
+      <div class="cta-content">
+        <h2 class="cta-title">Готові розпочати співпрацю?</h2>
+        <p class="cta-text">
+          Не витрачайте час на сумніви. Залиште заявку зараз, і ми розрахуємо вартість перевезення протягом 15 хвилин.
+        </p>
+      </div>
 
+      <div class="cta-buttons">
+        <a href="{{ url_for('contact.contact') }}" class="btn-primary btn-glow">
+          <span>Залишити заявку</span>
+        </a>
+      </div>
+
+    </div>
   </div>
 </section>
 
