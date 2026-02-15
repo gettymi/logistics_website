@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Послуги перевезень — бус, самосвал, переїзд, вантажники | Vezemo24{% endblock %}
+{% block description %}Послуги вантажних перевезень у Києві та області: бус до 2,5 т, самосвал до 10 т, квартирний переїзд під ключ, вантажники. Прозорі ціни.{% endblock %}
+{% block keywords %}послуги перевезень київ, вантажне таксі київ, переїзд під ключ, самосвал київ, вантажники київ, бус київ{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="services-page">
+  <div class="container">
+    <header class="services-page-header">
+      <h1 class="section-title">Наші послуги</h1>
+      <p class="services-page-intro">
+        Повний спектр вантажних перевезень у Києві та Київській області. Підбираємо транспорт і вантажників під ваше завдання. Прозорі ціни, фіксація до старту.
+      </p>
+    </header>
+
+    <div class="services-list">
+      <article class="service-card">
+        <div class="service-card-image">
+          <img src="{{ url_for('static', filename='images/busik.png') }}" alt="Бус до 2,5 тонн">
+        </div>
+        <div class="service-card-body">
+          <h2 class="service-card-title">Бус до 2,5 тонн</h2>
+          <p class="service-card-desc">Вантажне таксі для невеликих вантажів: меблі, побутова техніка, коробки. Швидкий виїзд, мінімум формальностей.</p>
+          <ul class="service-card-features">
+            <li>Переїзд з однієї квартири</li>
+            <li>Доставка меблів та техніки</li>
+            <li>По Києву та області</li>
+          </ul>
+          <a href="{{ url_for('contact.contact') }}" class="service-card-btn">Замовити</a>
+        </div>
+      </article>
+
+      <article class="service-card">
+        <div class="service-card-image">
+          <img src="{{ url_for('static', filename='images/samosval.png') }}" alt="Самосвал до 10 тонн">
+        </div>
+        <div class="service-card-body">
+          <h2 class="service-card-title">Самосвал до 10 тонн</h2>
+          <p class="service-card-desc">Перевезення сипучих матеріалів, будівельних відходів, піску, щебеню. Вивіз сміття після ремонту.</p>
+          <ul class="service-card-features">
+            <li>Сипучі матеріали та відходи</li>
+            <li>Доставка на об'єкт</li>
+            <li>Київ та Київська область</li>
+          </ul>
+          <a href="{{ url_for('contact.contact') }}" class="service-card-btn">Замовити</a>
+        </div>
+      </article>
+
+      <article class="service-card service-card--no-img">
+        <div class="service-card-icon" aria-hidden="true">🏠</div>
+        <div class="service-card-body">
+          <h2 class="service-card-title">Квартирний переїзд під ключ</h2>
+          <p class="service-card-desc">Авто + вантажники: збираємо, завантажуємо, веземо, розвантажуємо та розставляємо. Можна замовити упаковку та матеріали.</p>
+          <ul class="service-card-features">
+            <li>Повний цикл: від збирання до розстановки</li>
+            <li>Упаковка та матеріали за запитом</li>
+            <li>Вартість під ваш обсяг</li>
+          </ul>
+          <a href="{{ url_for('contact.contact') }}" class="service-card-btn">Замовити</a>
+        </div>
+      </article>
+
+      <article class="service-card service-card--no-img">
+        <div class="service-card-icon" aria-hidden="true">👷</div>
+        <div class="service-card-body">
+          <h2 class="service-card-title">Вантажники</h2>
+          <p class="service-card-desc">Допомога з завантаженням і розвантаженням — з авто або без. Підйом на поверх, розстановка меблів.</p>
+          <ul class="service-card-features">
+            <li>Завантаження / розвантаження</li>
+            <li>Підйом на поверх</li>
+            <li>Тариф від години</li>
+          </ul>
+          <a href="{{ url_for('contact.contact') }}" class="service-card-btn">Замовити</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="services-page-cta">
+      <p class="services-page-cta-text">Не знайшли потрібне? Опишіть задачу — підберемо варіант.</p>
+      <a href="{{ url_for('contact.contact') }}" class="btn-primary btn-cta-large">Залишити заявку</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

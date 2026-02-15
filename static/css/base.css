@@ -1,380 +1,396 @@
 /* =========================================
-   1. VARIABLES (ПЕРЕМЕННЫЕ)
+   VARIABLES
    ========================================= */
 :root {
-  /* Цвета */
-  --primary: #0ea5e9;       /* Основной синий */
-  --primary-hover: #0284c7; /* Темнее при наведении */
-  --accent: #f97316;        /* Оранжевый акцент */
-  --bg-body: #f9fafb;       /* Фон страницы */
-  --text-main: #0f172a;     /* Основной текст */
-  --text-muted: #6b7280;    /* Второстепенный текст */
+  --primary: #0ea5e9;
+  --primary-hover: #0284c7;
+  --accent: #f97316;
+  --bg-body: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
   --white: #ffffff;
-
-  /* Размеры и отступы */
-  --container-max: 1100px;  /* Максимальная ширина контента */
-  --header-height: 70px;
-  --radius: 1rem;           /* Закругление углов */
-
-  /* Тени */
-  --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
-  --shadow-md: 0 8px 20px rgba(2,6,23,0.08);
-  --shadow-glow: 0 4px 15px rgba(14, 165, 233, 0.35);
-
-  /* Шрифты */
-  --font-main: "Inter", system-ui, -apple-system, sans-serif;
+  --container-max: 1140px;
+  --header-height: 72px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+  --shadow-glow: 0 4px 20px rgba(14, 165, 233, 0.25);
+  --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --footer-bg: #0f172a;
+  --footer-text: #cbd5e1;
+  --footer-heading: #f1f5f9;
 }
 
 /* =========================================
-   2. RESET & GLOBAL STYLES (СБРОС И БАЗА)
+   RESET & GLOBAL
    ========================================= */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
 body {
   font-family: var(--font-main);
   background: var(--bg-body);
   color: var(--text-main);
   font-size: 16px;
   line-height: 1.6;
-  
-  /* Sticky Footer: Прижимаем футер к низу */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
-/* Ссылки по умолчанию */
-a {
-  text-decoration: none;
-  color: inherit;
-  transition: color 0.2s ease;
-}
+a { text-decoration: none; color: inherit; transition: color 0.2s ease, opacity 0.2s ease; }
 
 /* =========================================
-   3. LAYOUT UTILITIES (РАЗМЕТКА)
+   LAYOUT
    ========================================= */
-/* Основной контейнер - центрирует контент и дает отступы по краям на мобильных */
 .container {
   width: 100%;
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 1.5rem; /* Отступы слева и справа */
+  padding: 0 1.5rem;
 }
-
-/* Main должен занимать всё свободное место, толкая футер вниз */
-.main-content {
-  flex: 1;
-  padding: 2rem 0;
-  width: 100%; /* Важно для выравнивания */
-}
+.main-content { flex: 1; padding: 0; width: 100%; }
 
 /* =========================================
-   4. HEADER & NAVIGATION (ОНОВЛЕНИЙ)
+   HEADER — sticky, glassmorphism, phone, burger
    ========================================= */
 .site-header {
-  background: rgba(255, 255, 255, 0.95); /* Легка прозорість */
-  backdrop-filter: blur(10px);           /* Ефект матового скла */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* М'яка тінь */
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
+.site-header.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06); }
 
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 80px; /* Збільшили висоту (було 70px) */
-  padding: 0.5rem 0;
+  min-height: var(--header-height);
+  gap: 1rem;
 }
 
-/* Логотип (залишаємо як було, він вже гарний) */
-.brand { text-decoration: none; display: flex; align-items: center; }
-.logo-wrapper { display: flex; align-items: center; gap: 4px; }
-.text-logo {
-  font-family: var(--font-main);
-  font-weight: 900;
-  font-size: 2rem;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  background: linear-gradient(to right, #3b82f6 0%, var(--primary) 50%, #7dd3fc 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: background-position 0.4s ease-out;
-}
-.badge-24 {
-  display: flex; align-items: center; justify-content: center;
-  width: 48px; height: 48px;
-  background-color: var(--primary); color: var(--white);
-  font-weight: 900; font-size: 1.6rem;
-  border-radius: 50%; box-shadow: var(--shadow-glow);
-  flex-shrink: 0; margin-left: 5px;
-}
-
-/* --- НАВІГАЦІЯ --- */
-.nav {
+.brand { display: flex; align-items: center; }
+.logo-wrapper {
   display: flex;
-  gap: 0.5rem; /* Відступи між пунктами */
-  align-items: center;
-}
-
-.nav-link {
-  color: var(--text-main);
-  font-weight: 600; /* Жирніший шрифт (було 500) */
-  font-size: 1.05rem; /* Трохи більший розмір */
-  padding: 10px 18px;
-  border-radius: 50px; /* Овальна форма при наведенні */
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-/* Ефект при наведенні на звичайні посилання */
-.nav-link:not(.nav-btn):hover {
-  background: rgba(14, 165, 233, 0.08);
-  color: var(--primary);
-}
-
-/* --- КНОПКА В МЕНЮ (Розрахунок) --- */
-.nav-link.nav-btn {
-  background: var(--text-main); /* Темна кнопка (контраст) */
-  color: #fff;
-  padding: 10px 24px;
-  display: inline-flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.text-logo {
+  font-weight: 800;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #1d4ed8 0%, var(--primary) 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.badge-24 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--primary);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 1.35rem;
+  border-radius: 50%;
+  box-shadow: var(--shadow-glow);
+  flex-shrink: 0;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.nav-link {
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 16px;
+  border-radius: 999px;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-link:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary);
+}
+.nav-link.nav-btn {
+  background: var(--text-main);
+  color: var(--white);
+  padding: 10px 22px;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
 .nav-link.nav-btn:hover {
-  background: var(--primary); /* Стає синьою при наведенні */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(14, 165, 233, 0.3);
+  background: var(--primary);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
 }
 
-.nav-link.nav-btn svg {
-  width: 18px;
-  height: 18px;
+/* Кнопка «Позвонить» в хедері */
+.nav-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--primary);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  transition: background 0.2s, transform 0.2s;
+}
+.nav-phone:hover {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+.nav-phone-icon { font-size: 1.1rem; }
+.nav-phone-text { display: none; }
+@media (min-width: 769px) {
+  .nav-phone-text { display: inline; }
+}
+.nav-phone-num { white-space: nowrap; }
+
+/* Бургер — тільки на мобільних */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.burger:hover { background: rgba(14, 165, 233, 0.08); }
+.burger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text-main);
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.burger[aria-expanded="true"] .burger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.burger[aria-expanded="true"] .burger-line:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] .burger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
-/* --- МОБІЛЬНА ВЕРСІЯ --- */
-@media (max-width: 768px) {
-  .header-inner {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-    min-height: auto;
-  }
-  
+@media (max-width: 900px) {
+  .burger { display: flex; }
   .nav {
-    width: 100%;
-    justify-content: center;
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(14px);
+    padding: 1.5rem;
     gap: 0.5rem;
-    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: visibility 0.3s, opacity 0.3s, transform 0.3s;
+    z-index: 999;
   }
-  
-  /* На телефоні кнопку спрощуємо, щоб влізла */
-  .nav-link.nav-btn {
-    padding: 8px 16px;
-    font-size: 0.95rem;
+  .nav.is-open {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
   }
+  .nav .nav-link { width: 100%; text-align: center; padding: 14px; }
+  .nav .nav-phone { justify-content: center; margin-top: 0.5rem; }
+  .nav-phone-text { display: inline; }
 }
 
 /* =========================================
-   5. COMPONENTS (КОМПОНЕНТЫ)
+   COMPONENTS
    ========================================= */
-
-/* --- Buttons (Базовые кнопки) --- */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: var(--primary);
   color: var(--white);
-  padding: 12px 24px;
-  border-radius: 50px; /* Капсула */
+  padding: 14px 28px;
+  border-radius: 999px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
-
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
   background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
 }
 
-/* --- Alerts (Сообщения/Flash) --- */
-.alerts {
-  width: 100%;
-  margin-bottom: 1.5rem;
-}
-
+.alerts { width: 100%; margin-bottom: 1.5rem; }
 .alert {
   padding: 1rem 1.25rem;
   border-radius: var(--radius);
   font-weight: 500;
   margin-bottom: 0.5rem;
 }
-
-.alert-success {
-  background: #ecfdf5;
-  color: #065f46;
-  border: 1px solid #d1fae5;
-}
-
-.alert-error {
-  background: #fef2f2;
-  color: #9f1239;
-  border: 1px solid #fee2e2;
-}
+.alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.alert-error { background: #fef2f2; color: #9f1239; border: 1px solid #fecaca; }
 
 /* =========================================
-   6. FOOTER (СИНІЙ ВАРІАНТ)
+   FOOTER — темний, масивний, колонки, trust
    ========================================= */
 .site-footer {
-  /* Ваш фірмовий синій (градієнт для глибини) */
-  background: linear-gradient(135deg, var(--primary) 0%, #0284c7 100%);
-  color: #ffffff; /* Весь текст білий */
-  
-  padding-top: 4rem;
-  margin-top: 0; /* Прибираємо відступ зверху */
-  position: relative;
-  z-index: 10;
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 4rem 0 0;
+  margin-top: auto;
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
   gap: 3rem;
   padding-bottom: 3rem;
+  max-width: var(--container-max);
+  margin: 0 auto;
 }
 
-
-/* Логотип у футері */
-.footer-logo {
-  display: inline-flex;  /* Використовуємо inline-flex, щоб вони трималися купи */
-  align-items: center;   /* Вирівнювання по центру по вертикалі */
+.footer-brand .footer-logo {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
   margin-bottom: 1rem;
-  text-decoration: none;
-  
-  /* === ГОЛОВНЕ ВИПРАВЛЕННЯ === */
-  flex-wrap: nowrap;     /* Забороняє перенесення "24" вниз */
-  white-space: nowrap;   /* Забороняє розривати текст */
 }
-
-.footer-logo .badge-24 {
-  flex-shrink: 0; /* Забороняє зменшуватись/стискатись */
+.footer-logo-text {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--white);
 }
-
+.footer-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--white);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.2rem;
+  border-radius: 50%;
+}
 .footer-desc {
   font-size: 0.95rem;
-  line-height: 1.6;
-  opacity: 0.9; /* Легка прозорість для тексту */
+  line-height: 1.65;
+  color: var(--footer-text);
+  margin-bottom: 1.25rem;
+  max-width: 280px;
 }
+.footer-desc strong { color: var(--footer-heading); }
 
-/* Заголовки */
-.footer-col h4 {
-  color: #fff;
-  font-size: 1.2rem;
+.footer-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.85);
+}
+.footer-trust-item { display: flex; align-items: center; gap: 6px; }
+
+.footer-heading {
+  font-size: 1rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  color: var(--footer-heading);
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-/* Посилання у футері */
-.footer-col ul {
+.footer-links, .footer-contact {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+.footer-links li, .footer-contact li {
+  margin-bottom: 0.65rem;
+  font-size: 0.95rem;
+}
+.footer-links a, .footer-contact a {
+  color: var(--footer-text);
+  transition: color 0.2s;
+}
+.footer-links a:hover, .footer-contact a:hover {
+  color: var(--white);
+}
+.footer-contact strong { color: var(--footer-heading); }
 
-.footer-col li {
-  margin-bottom: 0.8rem;
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 1.5rem 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.6);
+}
+.footer-bottom strong { color: var(--footer-heading); }
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+  .footer-brand { grid-column: 1 / -1; text-align: center; }
+  .footer-desc { max-width: none; margin-left: auto; margin-right: auto; }
+  .footer-trust { justify-content: center; }
+}
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .footer-links, .footer-contact { text-align: center; }
 }
 
-.footer-col a {
-  color: #e0f2fe; /* Світло-блакитний відтінок */
-  text-decoration: none; /* Ніяких ліній за замовчуванням */
-  transition: all 0.2s ease;
+/* Thank you page */
+.thank-you-section { padding: 4rem 0; min-height: 50vh; display: flex; align-items: center; }
+.thank-you-card {
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(14, 165, 233, 0.12);
 }
-
-.footer-col a:hover {
-  color: #ffffff; /* При наведенні стає білосніжним */
-  text-decoration: none; /* ГАРАНТОВАНО ПРИБИРАЄМО ЛІНІЮ */
-  transform: translateX(5px); /* Елегантний зсув вправо на 5 пікселів */
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Легке світіння тексту */
-}
-
-/* Список контактів */
-.contact-list li {
+.thank-you-icon {
+  width: 72px; height: 72px;
+  margin: 0 auto 1.5rem;
+  background: var(--primary);
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 800;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #fff;
-  font-size: 1.05rem;
+  justify-content: center;
 }
-
-/* Іконки в списку */
-.contact-list span {
-  font-size: 1.2rem;
-}
-
-/* Нижня смуга */
-.footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Напівпрозора біла лінія */
-  padding: 1.5rem 0;
-  text-align: center;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.footer-bottom strong {
-  color: #fff;
-}
-
-/* Мобільна версія */
-@media (max-width: 768px) {
-  .site-footer { text-align: center; }
-  .footer-logo { justify-content: center; }
-  .contact-list li { justify-content: center; }
-}
-/* =========================================
-   7. MOBILE ADAPTATION (АДАПТИВ)
-   ========================================= */
-@media (max-width: 768px) {
-  /* Шапка становится столбиком */
-  .header-inner {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
-  }
-  
-  /* Логотип чуть меньше */
-  .text-logo { font-size: 1.8rem; }
-  .badge-24 { width: 40px; height: 40px; font-size: 1.4rem; }
-
-  /* Навигация на всю ширину, центрирована */
-  .nav {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap; /* Если ссылки не влезут, перенесутся */
-    gap: 0.5rem;
-  }
-
-  .nav-link {
-    font-size: 0.95rem;
-    padding: 0.5rem 0.8rem;
-  }
-}
+.thank-you-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--text-main); }
+.thank-you-text { color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+.thank-you-card .btn-primary { padding: 14px 28px; }

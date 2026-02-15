@@ -1,69 +1,69 @@
 <!-- templates/base.html -->
 <!DOCTYPE html>
-<html lang="ru">
-    <!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon.ico') }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon.ico') }}">
-<link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+<html lang="uk">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{% block title %}Vezemo24 — Вантажні перевезення Україна та Європа{% endblock %}</title>
-    <meta name="description" content="{% block description %}Вантажоперевезення по Україні та Європі. Розрахунок вартості, надійні водії, швидка доставка.{% endblock %}">
-    <meta name="keywords" content="{% block keywords %}вантажоперевезення, логістика, перевезення меблів, вантажне таксі, Київ, Європа{% endblock %}">
-    
-    <link rel="canonical" href="{{ request.base_url }}" />
+  <title>{% block title %}Вантажні перевезення Київ та Київська область | Vezemo24{% endblock %}</title>
+  <meta name="description" content="{% block description %}Вантажні перевезення Київ та область: переїзд, вантажне таксі, самосвал, вантажники. Прозорі ціни, фіксація до старту. Швидкий виїзд.{% endblock %}">
+  <meta name="keywords" content="{% block keywords %}вантажні перевезення київ, переїзд київ, вантажне таксі київ, самосвал київ, вантажники київ, київська область{% endblock %}">
 
-    <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}{{ self.description() }}{% endblock %}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request.url }}">
-    <meta property="og:image" content="{{ url_for('static', filename='img/og-image.jpg', _external=True) }}">
-    <meta property="og:site_name" content="Vezemo24">
+  <link rel="canonical" href="{{ request.base_url }}" />
+  <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ self.description() }}{% endblock %}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:image" content="{{ url_for('static', filename='img/og-image.jpg', _external=True) }}">
+  <meta property="og:site_name" content="Vezemo24">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    {% block head %}{% endblock %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  {% block head %}{% endblock %}
 </head>
-<body class="bg-page text-base text-gray-800 min-h-screen flex flex-col">
+<body class="bg-page min-h-screen flex flex-col">
 
-  <!-- NAVBAR -->
-<header class="site-header">
+  <!-- HEADER: sticky, glassmorphism, phone CTA, burger on mobile -->
+  <header class="site-header" id="site-header">
     <div class="container header-inner">
-      
       <a class="brand" href="{{ url_for('main.index') }}">
         <div class="logo-wrapper">
           <span class="text-logo">Веземо</span>
-          <div class="badge-24">24</div>
+          <span class="badge-24">24</span>
         </div>
       </a>
 
-      <nav class="nav">
+      <nav class="nav" id="main-nav" aria-label="Головна навігація">
         <a class="nav-link" href="{{ url_for('main.index') }}">Головна</a>
+        <a class="nav-link" href="{{ url_for('main.services') }}">Послуги</a>
+        <a class="nav-link" href="{{ url_for('main.zakordon') }}">Закордон</a>
         <a class="nav-link" href="{{ url_for('main.calculate_km') }}">Розрахунок відстані</a>
-        
-        <a class="nav-link nav-btn" href="{{ url_for('contact.contact') }}">
-          <span>Залишити заявку</span>
-        </a>
+        <a class="nav-link nav-btn" href="{{ url_for('contact.contact') }}">Залишити заявку</a>
       </nav>
-      
+
+      <button class="burger" id="burger" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="main-nav">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
     </div>
   </header>
 
-  <!-- MAIN -->
-  <main class="container main-content">
+  <main class="main-content">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <div class="alerts">
-          {% for category, msg in messages %}
-            <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-error{% endif %}">
-              {{ msg }}
-            </div>
-          {% endfor %}
+        <div class="container">
+          <div class="alerts">
+            {% for category, msg in messages %}
+              <div class="alert {% if category == 'success' %}alert-success{% elif category == 'error' %}alert-error{% endif %}">{{ msg }}</div>
+            {% endfor %}
+          </div>
         </div>
       {% endif %}
     {% endwith %}
@@ -71,57 +71,56 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- FOOTER -->
-<footer class="site-footer">
+  <!-- FOOTER: темний, структурований, колонки, trust signals -->
+  <footer class="site-footer">
     <div class="container">
-      
       <div class="footer-grid">
-        
-        <div class="footer-col brand-col">
+        <div class="footer-col footer-brand">
           <a href="{{ url_for('main.index') }}" class="footer-logo">
-            <span class="text-logo" style="color: #fff; background: none; -webkit-text-fill-color: initial;">Веземо</span>
-            <div class="badge-24" style="background: #fff; color: var(--primary);">24</div>
+            <span class="footer-logo-text">Веземо</span>
+            <span class="footer-logo-badge">24</span>
           </a>
           <p class="footer-desc">
-            Надійні перевезення по Києву та області. Ваші речі — наша відповідальність.
+            Вантажні перевезення <strong>Київ та Київська область</strong>. Надійно та швидко.
           </p>
         </div>
 
-        <div class="footer-col nav-col">
-          <h4>Меню</h4>
-          <ul>
+        <div class="footer-col">
+          <h4 class="footer-heading">Меню</h4>
+          <ul class="footer-links">
             <li><a href="{{ url_for('main.index') }}">Головна</a></li>
+            <li><a href="{{ url_for('main.services') }}">Послуги</a></li>
+            <li><a href="{{ url_for('main.zakordon') }}">Закордон</a></li>
             <li><a href="{{ url_for('main.calculate_km') }}">Розрахунок відстані</a></li>
-            <li><a href="{{ url_for('contact.contact') }}">Контакти (Заявка)</a></li>
+            <li><a href="{{ url_for('contact.contact') }}">Контакти / Заявка</a></li>
           </ul>
         </div>
 
-        <div class="footer-col contact-col">
-          <h4>Регіон роботи</h4>
-          <ul class="contact-list">
-            <li>
-              <span>📍</span> <strong>Київ та Київська область</strong>
-            </li>
-            <li>
-              <span>🚚</span> Працюємо без вихідних
-            </li>
-            <li class="hours">
-              <span>⏰</span> 08:00 - 22:00
-            </li>
+        <div class="footer-col">
+          <h4 class="footer-heading">Послуги</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('main.services') }}">Вантажне таксі (бус)</a></li>
+            <li><a href="{{ url_for('main.services') }}">Квартирний переїзд</a></li>
+            <li><a href="{{ url_for('main.services') }}">Самосвал</a></li>
+            <li><a href="{{ url_for('main.zakordon') }}">Перевезення за кордон</a></li>
           </ul>
         </div>
 
+        <div class="footer-col">
+          <h4 class="footer-heading">Локація</h4>
+          <ul class="footer-contact">
+            <li><strong>Київ та Київська область</strong></li>
+            <li>08:00 — 22:00 щодня</li>
+          </ul>
+        </div>
       </div>
 
       <div class="footer-bottom">
-        <p>© 2026 <strong>Веземо 24</strong>. Всі права захищено.</p>
+        <p>© 2026 <strong>Веземо 24</strong>. Вантажні перевезення Київ та Київська область. Всі права захищено.</p>
       </div>
-      
     </div>
   </footer>
 
-
-  <!-- Локальные JS-файлы -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>

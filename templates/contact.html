@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Зв’язатися з нами{% endblock %}
+{% block title %}Зв’язатися з нами — залишити заявку | Vezemo24{% endblock %}
+{% block description %}Залиште заявку на перевезення: достатньо номера телефону. Передзвонимо та розрахуємо вартість. Київ та Київська область.{% endblock %}
+{% block keywords %}замовити перевезення київ, заявка вантажне таксі, передзвонити переїзд{% endblock %}
 
 {% block head %}
   {{ super() }}
@@ -15,19 +17,20 @@
       
       <div class="form-header">
         <h1 class="contact-title">Зв’язатися з нами</h1>
-        <p class="contact-desc">Залиште свої дані, і ми розрахуємо вартість або відповімо на ваші запитання найближчим часом.</p>
+        <p class="contact-desc">Залиште номер телефону — передзвонимо та розрахуємо вартість. Ім'я та коментар необов'язкові.</p>
+        <p class="contact-hint">Достатньо лише телефону — передзвонимо найближчим часом.</p>
       </div>
 
       <form id="contactForm" method="POST" action="/contact">
         
-        <div class="form-group">
-          <label for="name">Імʼя <span class="required">*</span></label>
-          <input type="text" id="name" name="name" required placeholder="Ваше ім’я" class="form-input">
+        <div class="form-group form-group--phone">
+          <label for="phone">Телефон <span class="required">*</span></label>
+          <input id="phone" name="phone" type="tel" required class="form-input" placeholder="Номер телефону">
         </div>
 
         <div class="form-group">
-          <label for="phone">Телефон <span class="required">*</span></label>
-          <input id="phone" name="phone" type="tel" required class="form-input">
+          <label for="name">Імʼя (необов'язково)</label>
+          <input type="text" id="name" name="name" placeholder="Ваше ім’я" class="form-input">
         </div>
 
         <div class="form-group">
@@ -36,8 +39,8 @@
         </div>
 
         <div class="form-group">
-          <label for="message">Повідомлення <span class="required">*</span></label>
-          <textarea id="message" name="message" rows="4" required placeholder="Опишіть вантаж, маршрут або ваше запитання..." class="form-input"></textarea>
+          <label for="message">Повідомлення (необов'язково)</label>
+          <textarea id="message" name="message" rows="4" placeholder="Опишіть вантаж, маршрут або запитання — можна залишити порожнім" class="form-input"></textarea>
         </div>
 
         <button type="submit" id="submitBtn" class="btn-submit">

@@ -45,6 +45,14 @@
   margin: 0;
 }
 
+.contact-hint {
+  font-size: 0.95rem;
+  color: var(--primary);
+  font-weight: 600;
+  margin: 0.75rem 0 0;
+  line-height: 1.4;
+}
+
 /* === 3. ПОЛЯ ВВОДУ === */
 .form-group {
   margin-bottom: 1.5rem;

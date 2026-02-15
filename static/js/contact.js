@@ -30,25 +30,20 @@ document.addEventListener("DOMContentLoaded", () => {
   phoneInput.addEventListener('keyup', validatePhone);
   phoneInput.addEventListener('change', validatePhone);
 
-  // 3. Обробка форми
+  // 3. Обробка форми (обов'язкове лише поле "телефон")
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     resetUI();
 
     const isPhoneValid = validatePhone();
-    const name = form.name.value.trim();
-    const message = form.message.value.trim();
+    const phoneVal = (phoneInput.value && iti.getNumber) ? iti.getNumber().trim() : phoneInput.value.trim();
 
-    if (!name || !isPhoneValid || !message) {
-      if (!isPhoneValid) {
-        showAlert("Номер телефону введено некоректно. Перевірте кількість цифр.", "error");
-      } else {
-        showAlert("Будь ласка, заповніть усі обов'язкові поля.", "error");
-      }
-
-      form.querySelectorAll("[required]").forEach(input => {
-        if (!input.value.trim()) input.classList.add("error");
-      });
+    if (!phoneVal || !isPhoneValid) {
+      showAlert("Введіть коректний номер телефону.", "error");
+      phoneInput.classList.add("error");
+      const itiInput = document.querySelector(".iti__tel-input, .iti input");
+      if (itiInput) itiInput.classList.add("error");
+      alertBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
       return;
     }
 
@@ -68,15 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) {
         showAlert(data.error || "Помилка відправки", "error");
+        alertBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
         return;
       }
 
-      showAlert(" Дякуємо! Повідомлення успішно надіслано.", "success");
-      form.reset();
-      phoneInput.classList.remove("valid");
+      // Google Ads / GTM: подія конверсії при успішній відправці
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "form_submission" });
+      window.location.href = "/thank-you";
 
     } catch (err) {
-      showAlert(" Сервер недоступний. Спробуйте пізніше або напишіть у месенджери.", "error");
+      showAlert("Сервер недоступний. Спробуйте пізніше або зателефонуйте нам.", "error");
+      alertBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } finally {
       submitBtn.disabled = false;
     }

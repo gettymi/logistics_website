@@ -1,726 +1,961 @@
 /* =========================================
-   1. UTILITIES & SECTIONS (ОБЩИЕ ОТСТУПЫ)
+   INDEX — бесшовный полотно, только отступы и типографика
    ========================================= */
-section {
-  margin-bottom:6rem; /* Отступ между секциями */
+
+/* Общий фон страницы — одно полотно, без полосатости */
+.index-page-wrap {
+  background: linear-gradient(180deg, #fafbfc 0%, #f2f4f6 45%, #f6f8fa 100%);
+  min-height: 100%;
 }
 
-/* =========================================
-   1. UTILITIES & SECTIONS (ОБЩИЕ ОТСТУПЫ)
-   ========================================= */
+/* Секции — без фонов, только отступы */
 section {
-  margin-bottom: 6rem; /* Чуть больше воздуха между секциями */
+  margin-bottom: 0;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
-/* ОБНОВЛЕННЫЙ ЗАГОЛОВОК СЕКЦИЙ */
 .section-title {
-  position: relative;
-  display: block;          /* На всю ширину */
-  text-align: center;      /* Текст по центру */
-  margin: 0 auto 3rem;     /* Отступ снизу */
+  display: block;
+  text-align: center;
+  margin: 0 auto 1rem;
   padding: 0;
-  background: transparent; /* Убираем фон-капсулу */
-  
-  /* Типографика */
-  font-size: 2.25rem;      /* Крупно и солидно */
-  font-weight: 800;        /* Жирно */
-  color: var(--text-main); /* Темный цвет (почти черный) */
-  letter-spacing: -0.5px;  /* Чуть плотнее буквы */
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.03em;
+  line-height: 1.25;
 }
-
-/* Аккуратная синяя линия под заголовком */
 .section-title::after {
   content: "";
   display: block;
-  width: 80px;             /* Ширина линии */
-  height: 4px;             /* Толщина линии */
+  width: 56px;
+  height: 3px;
   background: var(--primary);
-  margin: 16px auto 0;     /* Отступ от текста до линии */
+  margin: 1.25rem auto 0;
   border-radius: 2px;
 }
-
-/* АДАПТИВНОСТЬ ЗАГОЛОВКА */
 @media (max-width: 768px) {
-  .section-title {
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
-  }
+  .section-title { font-size: 1.6rem; margin-bottom: 0.75rem; }
+  section { padding-top: 2rem; padding-bottom: 2rem; }
 }
 
 /* =========================================
-   2. HERO SECTION (VIDEO BACKGROUND)
+   HERO — хедер зверху, відео заповнює решту екрану, без білого знизу
    ========================================= */
 .hero-video-container {
-  /* --- BREAKOUT: ВЫРЫВАЕМСЯ ИЗ КОНТЕЙНЕРА --- */
-  width: 100vw;               /* Ширина всего окна браузера */
+  width: 100vw;
   position: relative;
   left: 50%;
-  right: 50%;
-  margin-left: -50vw;         /* Центрируем после расширения */
-  margin-right: -50vw;
-  
-  /* --- ВЫСОТА И ОТСТУПЫ --- */
-  height: 85vh;               /* 85% от высоты экрана (масштабно!) */
-  min-height: 600px;          /* Чтобы на маленьких экранах не схлопнулось */
-  margin-top: -2rem;          /* Убираем верхний пробел (компенсация padding из base.css) */
-  margin-bottom: 4rem;
-  
-  /* --- ВНУТРЕННОСТИ --- */
+  margin-left: -50vw;
+  height: calc(100vh - 72px);
+  min-height: 320px;
+  margin-top: 0;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   color: #fff;
 }
-
-/* Видео на фоне */
 .bg-video {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Важно: заполняет все пространство без искажений */
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
   z-index: 0;
 }
-
-/* Синий фильтр (Overlay) */
 .video-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* Градиент: Сверху прозрачнее, снизу темнее для читаемости */
-  background: linear-gradient(180deg, rgba(14, 165, 233, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(15,23,42,0.45) 100%);
   z-index: 1;
 }
-
-/* Контент по центру */
 .hero-content {
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 900px;
+  max-width: 820px;
   padding: 0 1.5rem;
-  /* Немного анимации появления при загрузке */
-  animation: fadeUp 1s ease-out;
+  animation: fadeUp 0.8s ease-out;
 }
-
-/* Простая анимация всплытия текста */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 .hero-title {
-  font-size: 3.5rem; /* Крупнее для десктопа */
+  font-size: 3rem;
   font-weight: 900;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.4);
 }
-
 .hero-lead {
-  font-size: 1.35rem;
-  margin-bottom: 2.5rem;
-  opacity: 0.95;
-  line-height: 1.6;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  opacity: 0.96;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
 }
-
-/* === BUTTONS === */
 .main-screen__buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
-
-.btn-outline-white {
+.btn-hero-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
-  color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  padding: 14px 32px;
-  border-radius: 50px;
-  font-weight: 700;
-  text-decoration: none;
-  backdrop-filter: blur(4px); /* Эффект размытия стекла */
-  transition: all 0.3s ease;
+  padding: 16px 36px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-radius: 999px;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
+.btn-hero-cta.btn-primary {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+}
+.btn-hero-cta.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(14, 165, 233, 0.45);
+}
+.btn-outline-white {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(8px);
+}
 .btn-outline-white:hover {
   background: #fff;
   color: var(--primary);
   border-color: #fff;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+}
+@media (max-width: 768px) {
+  .hero-video-container { min-height: 280px; }
+  .hero-title { font-size: 1.85rem; }
+  .hero-lead { font-size: 1rem; margin-bottom: 1.5rem; }
+  .main-screen__buttons { flex-direction: column; }
+  .btn-hero-cta { width: 100%; }
 }
 
-/* === АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНОВ (ИСПРАВЛЕНО) === */
-@media only screen and (max-width: 768px) {
-  .hero-video-container {
-    /* БЫЛО: height: 100vh; - на весь экран */
-    /* СТАЛО: 60vh - 60% от высоты экрана. И минимум 500px, чтобы всё влезло. */
-    height: 60vh;
-    min-height: 500px;
-
-    /* Компенсация отступа сверху оставляем */
-    margin-top: -2rem;
-
-    /* УБРАНО: скругление углов */
-    border-radius: 0;
-  }
-
-  .hero-title {
-    font-size: 2rem; /* Чуть меньше шрифт заголовка */
-    margin-bottom: 1rem;
-  }
-
-  .hero-lead {
-    font-size: 1.05rem;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Кнопки на телефоне */
-  .main-screen__buttons {
-    flex-direction: column; /* Друг под другом */
-    gap: 1rem;
-    width: 100%; /* На всю ширину контейнера */
-  }
-
-  .btn-primary, .btn-outline-white {
-    width: 100%; /* Кнопки растягиваются на всю ширину */
-    padding: 14px 20px; /* Чуть меньше отступы внутри */
-  }
-}
 /* =========================================
-   3. ADVANTAGES (ПРЕИМУЩЕСТВА)
+   ADVANTAGES
    ========================================= */
+.advantages-section { padding-top: 2.5rem; padding-bottom: 2.5rem; }
 .advantages-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
-
 .adv-card {
-  background: var(--white);
-  padding: 2rem;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 2rem 1.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.04);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .adv-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(14, 165, 233, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
 }
-
 .adv-icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 1rem;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f9ff; /* Светло-голубой круг */
+  background: rgba(14, 165, 233, 0.1);
   border-radius: 50%;
 }
-
 .adv-icon img {
-  width: 32px;
-  height: 32px;
-  /* Если иконки черные, этот фильтр сделает их синими */
+  width: 28px;
+  height: 28px;
   filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(180deg) brightness(118%) contrast(119%);
 }
-
 .adv-title {
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: var(--text-main);
+  line-height: 1.35;
 }
-
 .adv-text {
   font-size: 0.95rem;
   color: var(--text-muted);
+  line-height: 1.65;
 }
 
 /* =========================================
-   4. SERVICES (УСЛУГИ) - ГЕОМЕТРИЯ
+   SERVICES
    ========================================= */
-
 .services-section {
-  position: relative;
-  background-color: #f8fafc; /* Светлый основной фон */
-  padding: 6rem 0;           /* Хорошие отступы сверху и снизу */
-  overflow: hidden;          /* Чтобы треугольники не вылезали за экран */
-  z-index: 1;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
-
-/* === ВЕРХНИЙ УГОЛ (СИНИЙ) === */
-.services-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 450px; /* Высота фигуры */
-  background: #0ea5e9; /* Твой основной синий */
-  
-  /* Делаем треугольник: Точка 0,0 -> 100% ширины,0 -> 0,100% высоты */
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-  
-  opacity: 0.15; /* Плотность цвета (15% видимости). Хочешь ярче - ставь 0.25 */
-  z-index: -1;   /* Убираем НАЗАД, под контент */
-}
-
-/* === НИЖНИЙ УГОЛ (ЗЕРКАЛЬНЫЙ) === */
-.services-section::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 450px;
-  background: #0ea5e9;
-  
-  /* Делаем треугольник наоборот: справа снизу */
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  
-  opacity: 0.15;
-  z-index: -1;
-}
-
-/* === ЗАГОЛОВОК === */
-.section-title {
-  position: relative;
-  display: inline-block;
-  /* Центрирование */
-  left: 50%;
-  transform: translateX(-50%);
-  
-  background: #fff; /* Белая подложка, чтобы текст читался на фоне треугольника */
-  color: var(--text-main);
-  padding: 0.75rem 2rem;
-  border-radius: 50px;
-  font-weight: 800;
-  font-size: 2rem;
-  margin-bottom: 3rem;
-  
-  /* Тень, чтобы выделить заголовок над геометрией */
-  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.15);
-  border: 1px solid rgba(14, 165, 233, 0.1);
-}
-
-/* Синяя черточка под текстом заголовка */
-.section-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: var(--primary);
-  margin: 8px auto 0;
-  border-radius: 2px;
-}
-
-/* ... дальше идет твой .services-grid и карточки ... */
-
-/* === GRID === */
+.services-section .section-title { margin-bottom: 1.5rem; }
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  max-width: 1100px;
+  max-width: 1000px;
   margin: 0 auto;
 }
-
-/* === CARD === */
 .card {
   background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
-
 .card:hover {
-  border-color: #0ea5e9;
-  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.25);
   transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.1);
 }
-
-.card-content {
-  padding: 1.5rem;
-}
-
+.card-content { padding: 1.75rem; }
 .card-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 1rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
 }
-
 .card-text {
   font-size: 1rem;
-  color: #475569;
-  line-height: 1.6;
+  color: var(--text-muted);
+  line-height: 1.65;
 }
-
-/* === IMAGE === */
 .card-image {
   width: 100%;
-  height: auto;
   overflow: hidden;
 }
-
 .card-image img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
-  transition: transform 0.6s ease, filter 0.4s ease;
+  transition: transform 0.5s ease;
 }
-
-/* при наведении на карточку — оживляем фото */
-.card:hover .card-image img {
-  transform: scale(1.05);
-  filter: brightness(1.05);
-}
-
-/* спеціальний ефект для карти Києва */
+.card:hover .card-image img { transform: scale(1.04); }
 .card:nth-child(2) .card-image img {
   filter: invert(0.05) saturate(1.3) brightness(0.95);
 }
-
 .card:nth-child(2):hover .card-image img {
   filter: invert(0.1) saturate(1.5) brightness(1);
 }
 
 /* =========================================
-   5. REVIEWS (ВІДГУКИ) - MODERN STYLE
+   PRICES — цінники + Закордон + акція для перших клієнтів
    ========================================= */
-.reviews-section {
-  background: #f8fafc; /* Світлий фон */
-  padding: 4rem 0 6rem;
+.prices-section {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
-
-.reviews-grid {
+.prices-intro {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: -0.5rem auto 2.5rem;
+  max-width: 520px;
+}
+.prices-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  max-width: 720px;
+  margin: 0 auto;
 }
-
-.review-card {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+@media (min-width: 720px) {
+  .prices-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 960px;
+    gap: 1.5rem;
+  }
+}
+.price-card {
+  position: relative;
+  padding: 2rem 1.25rem;
+  border-radius: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border-top: 3px solid transparent;
+}
+.price-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 0 0 3px 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.price-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  border-color: rgba(14, 165, 233, 0.25);
+}
+.price-card:hover::before {
+  opacity: 1;
+}
+.price-card-featured {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.95) 100%);
+  border-color: rgba(14, 165, 233, 0.3);
+  box-shadow: 0 12px 40px rgba(14, 165, 233, 0.12);
+}
+.price-card-featured::before {
+  width: 60px;
+  opacity: 1;
+  background: linear-gradient(90deg, #0ea5e9, #0284c7);
+}
+.price-card-featured:hover {
+  box-shadow: 0 20px 48px rgba(14, 165, 233, 0.18);
+}
+.price-card-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  background: #fff;
+  padding: 5px 14px;
+  border-radius: 999px;
+  box-shadow: 0 2px 12px rgba(14, 165, 233, 0.2);
+}
+.price-card-badge--outline {
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.price-card-badge--promo {
+  color: #b45309;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  box-shadow: 0 2px 12px rgba(180, 83, 9, 0.25);
+}
+.price-card-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.25rem;
+  line-height: 1.3;
+}
+.price-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+.price-card-desc strong {
+  color: var(--text-main);
+  font-weight: 700;
+}
+.price-card-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0 0 1.25rem;
+  line-height: 1.2;
+}
+.price-unit {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-muted);
+  opacity: 0.9;
+}
+.price-card-value--discuss {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.price-card-value--promo {
+  font-size: 1.75rem;
+  color: #b45309;
+  letter-spacing: -0.02em;
+}
+.price-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.price-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(14, 165, 233, 0.45);
+  color: #fff;
+}
+.price-card-btn--secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  box-shadow: none;
+}
+.price-card-btn--secondary:hover {
+  background: rgba(14, 165, 233, 0.08);
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.2);
+}
+.price-card-btn--promo {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  box-shadow: 0 6px 20px rgba(180, 83, 9, 0.35);
+}
+.price-card-btn--promo:hover {
+  box-shadow: 0 10px 28px rgba(180, 83, 9, 0.45);
+}
+/* Спеціальні умови — горизонтальні смуги під тарифами */
+.prices-extras {
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.review-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-/* Шапка відгуку (Аватар + Ім'я) */
-.review-header {
+.price-extra {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f1f5f9;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+}
+.price-extra:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+.price-extra-label {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+.price-extra-label--promo {
+  color: #b45309;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+.price-extra-content {
+  flex: 1;
+  min-width: 0;
+}
+.price-extra-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.2rem;
+  line-height: 1.3;
+}
+.price-extra-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.45;
+}
+.price-extra-desc strong {
+  color: var(--text-main);
+}
+.price-extra-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #b45309;
+  flex-shrink: 0;
+}
+.price-extra-cta {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  padding: 10px 20px;
+  border: 2px solid var(--primary);
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.price-extra:hover .price-extra-cta {
+  background: var(--primary);
+  color: #fff;
+}
+.price-extra-cta--promo {
+  color: #b45309;
+  border-color: #b45309;
+}
+.price-extra:hover .price-extra-cta--promo {
+  background: #b45309;
+  color: #fff;
+}
+.price-extra--zakordon {
+  border-color: rgba(71, 85, 105, 0.12);
+}
+.price-extra--promo {
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.35) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border-color: rgba(217, 119, 6, 0.2);
+  box-shadow: 0 4px 24px rgba(180, 83, 9, 0.08);
+}
+.price-extra--promo:hover {
+  box-shadow: 0 12px 36px rgba(180, 83, 9, 0.12);
+}
+@media (max-width: 640px) {
+  .prices-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+  }
+  .price-extra {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .price-extra-cta {
+    align-self: stretch;
+    text-align: center;
+  }
+  .price-extra-value {
+    font-size: 1.5rem;
+  }
 }
 
-/* Круглі аватарки з ініціалами */
-.review-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+/* Посилання "Детальніше про послуги" */
+.services-more {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+.link-more {
+  font-weight: 600;
+  color: var(--primary);
+}
+.link-more:hover { text-decoration: underline; }
+
+/* =========================================
+   SERVICES PAGE — сторінка Послуги
+   ========================================= */
+.services-page {
+  padding: 3rem 0 4rem;
+}
+.services-page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.services-page-header .section-title {
+  margin-bottom: 0.75rem;
+}
+.services-page-intro {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+.services-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+@media (min-width: 700px) {
+  .services-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.service-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+}
+.service-card-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+.service-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 1rem;
+}
+.service-card--no-img .service-card-icon {
+  width: 100%;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-weight: 700;
-  font-size: 1.25rem;
-  flex-shrink: 0;
+  font-size: 3rem;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
 }
-
-/* Різні кольори для аватарок */
-.color-1 { background: linear-gradient(135deg, #f59e0b, #d97706); } /* Оранжевий */
-.color-2 { background: linear-gradient(135deg, #3b82f6, #2563eb); } /* Синій */
-.color-3 { background: linear-gradient(135deg, #10b981, #059669); } /* Зелений */
-
-.review-info {
+.service-card-body {
+  padding: 1.5rem 1.5rem 1.75rem;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
-
-.review-author {
-  font-weight: 700;
+.service-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
   color: var(--text-main);
-  font-size: 1.05rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.3;
 }
-
-.review-stars {
-  color: #f59e0b; /* Золотий колір зірок */
-  letter-spacing: 2px;
+.service-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+.service-card-features {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
   font-size: 0.9rem;
-  margin-top: 2px;
-}
-
-.review-text {
-  font-size: 1rem;
-  color: #4b5563;
-  font-style: italic;
+  color: var(--text-muted);
   line-height: 1.6;
 }
-
-/* =========================================
-   6. FAQ SECTION (АККОРДЕОН)
-   ========================================= */
-.faq-section {
-  /* Breakout: Делаем секцию во всю ширину с синим фоном */
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  background: linear-gradient(180deg, var(--primary) 0%, #0284c7 100%);
-  color: var(--white);
-  padding: 4rem 1.5rem;
-  margin-bottom: 0 !important;
-}
-
-.faq-section .section-title {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--white);
-}
-
-.faq-container {
-  max-width: 800px; /* FAQ узкий для удобства чтения */
-  margin: 0 auto;
-}
-
-.faq-item {
-  background: rgba(255, 255, 255, 0.1);
-  margin-bottom: 1rem;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: background 0.3s;
-}
-
-.faq-item:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.faq-question {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem;
-  background: transparent;
-  border: none;
-  color: var(--white);
-  font-weight: 600;
-  font-size: 1.05rem;
-  cursor: pointer;
-  text-align: left;
-}
-
-.faq-icon {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.3s;
-}
-
-/* JS добавляет класс .active */
-.faq-item.active .faq-icon {
-  transform: rotate(180deg);
-}
-
-.faq-answer {
-  max-height: 0; /* Скрыто по умолчанию */
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.4s ease;
-  background: rgba(0,0,0,0.05);
-}
-
-.faq-item.active .faq-answer {
-  max-height: 300px; /* Достаточно для текста */
-  padding: 0 1.25rem 1.25rem;
-}
-
-/* =========================================
-   7. CTA SECTION (ФІНАЛЬНИЙ ЗАКЛИК) - 1 КНОПКА
-   ========================================= */
-.cta-section {
+.service-card-features li {
   position: relative;
-  
-  /* BREAKOUT: На всю ширину */
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  
-  background: #0f172a;
-  background-image: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  
-  margin-top: 0;
-  margin-bottom: 0;
-
-  margin-bottom: -2rem !important;
-  
-  padding: 6rem 0;
-  color: white;
-  overflow: hidden;
+  padding-left: 1.25rem;
+  margin-bottom: 0.35rem;
 }
-
-/* Декоративний круг */
-.cta-section::after {
+.service-card-features li::before {
   content: "";
   position: absolute;
-  top: -50%;
-  right: -5%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  pointer-events: none;
-  z-index: 1;
+  background: var(--primary);
 }
-
-/* Внутрішній контейнер */
-.cta-inner {
-  display: flex;
-  align-items: center; /* Рівно по центру вертикально */
-  
-  /* БУЛО: justify-content: space-between; (розкидало по краях) */
-  /* СТАЛО: просто flex, щоб вони були поруч, але з відступом */
-  gap: 4rem; 
-  
-  position: relative;
-  z-index: 2;
-  max-width: 1000px; /* Трохи звузимо контент, щоб було компактніше */
-  margin: 0 auto;    /* Центруємо сам блок */
+.service-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 2px solid var(--primary);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  margin-top: auto;
+  align-self: flex-start;
 }
-
-.cta-content {
-  flex: 1; /* Текст займає весь вільний простір */
+.service-card-btn:hover {
+  background: var(--primary);
+  color: #fff;
 }
-
-.cta-title {
-  color: #ffffff;
-  font-size: 2.8rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  line-height: 1.1;
-  letter-spacing: -1px;
-}
-
-.cta-text {
-  color: #94a3b8;
-  font-size: 1.15rem;
-  line-height: 1.6;
-  max-width: 550px; /* Обмежимо ширину тексту для читабельності */
-}
-
-/* Блок кнопки */
-.cta-buttons {
-  flex-shrink: 0; /* Щоб кнопка не стискалася */
-}
-
-/* === ВЕЛИКА КНОПКА === */
-/* Спеціальний стиль для кнопки всередині CTA */
-.cta-buttons .btn-primary {
-  padding: 18px 45px;   /* Значно більша кнопка */
-  font-size: 1.25rem;   /* Більший текст */
-  border-radius: 50px;
-  min-width: 260px;     /* Мінімальна ширина, щоб виглядала солідно */
+.services-page-cta {
   text-align: center;
-  display: inline-block;
-  
-  /* Ефект світіння */
-  box-shadow: 0 0 25px rgba(14, 165, 233, 0.5); 
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+.services-page-cta-text {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin: 0 0 1.25rem;
+}
+.services-page .btn-cta-large {
+  padding: 16px 36px;
+  font-size: 1.1rem;
+  border-radius: 999px;
+  font-weight: 700;
 }
 
-.cta-buttons .btn-primary:hover {
-  box-shadow: 0 0 40px rgba(14, 165, 233, 0.7);
+/* CTA — на всю ширину, без фону */
+.cta-section {
+  padding: 4rem 0;
+  margin: 0;
+}
+.cta-section .container {
+  max-width: 100%;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.cta-section .cta-inner {
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.cta-section .cta-title {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 0.75rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.cta-section .cta-text {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin: 0 0 1.75rem;
+  line-height: 1.6;
+}
+.cta-section .btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 44px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-radius: 999px;
+  box-shadow: 0 8px 28px rgba(14, 165, 233, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.cta-section .btn-cta:hover {
   transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(14, 165, 233, 0.5);
 }
-
-
-/* === АДАПТИВ CTA === */
-@media (max-width: 900px) {
-  .cta-section {
-    padding: 4rem 1.5rem;
-  }
-
-  .cta-inner {
-    flex-direction: column; /* Текст зверху, кнопка знизу */
-    text-align: center;
-    gap: 2rem;
-  }
-  
-  .cta-buttons {
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .cta-buttons .btn-primary {
-    width: 100%; /* На телефоні кнопка на всю ширину */
-  }
-  
-  .cta-title {
-    font-size: 2.2rem;
-  }
+.cta-section .cta-trust {
+  margin: 1.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
 }
-/* =========================================
-   8. MOBILE RESPONSIVE (ТЕЛЕФОНЫ)
-   ========================================= */
 @media (max-width: 768px) {
-  /* Hero */
-  .hero-grid {
-    grid-template-columns: 1fr; /* Одна колонка */
-    text-align: center;
-    gap: 2rem;
-  }
-  
-  .hero-image {
-    order: -1; /* Картинка сверху */
-  }
+  .cta-section { padding: 3rem 0; }
+  .cta-section .cta-title { font-size: 1.5rem; }
+  .cta-section .cta-text { font-size: 1rem; margin-bottom: 1.5rem; }
+  .cta-section .cta-trust { margin-top: 1rem; font-size: 0.85rem; }
+}
 
-  .cta-row {
-    justify-content: center; /* Кнопки по центру */
-  }
+/* =========================================
+   TRUST SECTION — Маніфест / Чому ми (Seamless, велика типографіка)
+   ========================================= */
+.trust-section {
+  padding: 7rem 1.5rem 7rem;
+  margin: 0;
+}
+/* Переливання кольору по тексту — постійна анімація */
+@keyframes trust-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
 
-  .heading-lg {
-    font-size: 1.8rem; /* Меньше шрифт */
-  }
+.trust-heading {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  text-align: center;
+  margin: 0 auto 4rem;
+  max-width: 720px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    90deg,
+    #0f172a 0%,
+    #1e293b 20%,
+    #334155 40%,
+    #475569 50%,
+    #334155 60%,
+    #1e293b 80%,
+    #0f172a 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: trust-flow 8s ease-in-out infinite;
+}
+.trust-grid {
+  display: grid;
+  gap: 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.trust-line {
+  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+  line-height: 1.7;
+  margin: 0;
+  font-weight: 500;
+  background: linear-gradient(
+    90deg,
+    #64748b 0%,
+    #94a3b8 25%,
+    #64748b 50%,
+    #475569 75%,
+    #64748b 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: trust-flow 6s ease-in-out infinite;
+}
+.trust-line-1 { padding-left: 0; animation-delay: 0s; }
+.trust-line-2 { padding-left: 2rem; animation-delay: 0.4s; }
+.trust-line-3 { padding-left: 4rem; animation-delay: 0.8s; }
+@media (max-width: 768px) {
+  .trust-section { padding: 5rem 1.5rem 5rem; }
+  .trust-heading { margin-bottom: 3rem; }
+  .trust-grid { gap: 2rem; }
+  .trust-line-1, .trust-line-2, .trust-line-3 { padding-left: 0; }
+  .trust-line { font-size: 1.1rem; }
+}
 
-  /* Секции */
-  .section-title {
-    font-size: 1.3rem;
-  }
-  
-  /* Убираем лишние отступы по краям */
-  .services-section, .faq-section {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+/* =========================================
+   INTERNATIONAL SECTION — fullscreen + Background Slider + Ken Burns
+   ========================================= */
+.international-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 4rem 1.5rem;
+  color: var(--white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Фоновий слайдер (4 картинки, crossfade) */
+.international-bg-slider {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.international-bg-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.international-bg-slide.international-bg-slide--active {
+  opacity: 1;
+  z-index: 1;
+  animation: international-kenburns 6s ease-in-out forwards;
+}
+@keyframes international-kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+/* Затемнення поверх слайдів для читабельності тексту */
+.international-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.65) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+.international-inner {
+  position: relative;
+  z-index: 3;
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+.international-hook {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
+}
+.international-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  margin: 0 0 1.25rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+.international-desc {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 2.5rem;
+}
+.international-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: var(--white);
+  color: #0f172a;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.international-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  color: #0f172a;
+}
+@media (max-width: 768px) {
+  .international-section { padding: 3rem 1.5rem; min-height: 100dvh; }
+  .international-desc { margin-bottom: 2rem; }
 }

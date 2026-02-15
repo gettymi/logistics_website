@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/calculate_km.css') }}">
 {% endblock %}
 
@@ -9,25 +10,27 @@
   
   <div class="control-panel">
     <div class="panel-header">
-      <h2>Побудова маршруту</h2>
-      <p>Розрахуйте відстань та час</p>
+      <h2>Розрахунок відстані</h2>
+      <p>Вкажіть місто чи адресу або поставте точку на карті — побачите відстань і час у дорозі</p>
     </div>
 
     <div id="points-container" class="inputs-stack">
       <div class="input-row" data-index="0">
         <div class="icon-marker start">A</div>
-        <input type="text" class="route-input" placeholder="Звідки (Місто, адреса)">
+        <input type="text" class="route-input" placeholder="Звідки (місто або адреса)" autocomplete="off">
       </div>
-      
       <div class="input-row" data-index="1">
         <div class="icon-marker end">B</div>
-        <input type="text" class="route-input" placeholder="Куди">
+        <input type="text" class="route-input" placeholder="Куди (місто або адреса)" autocomplete="off">
       </div>
     </div>
 
-    <div class="actions">
-      <button id="add-point" class="btn-text">+ Додати проміжну точку</button>
-      <button id="build-route" class="btn-primary">
+    <div class="actions actions-wrap">
+      <div class="actions-row">
+        <button type="button" id="add-point" class="btn-text">+ Додати точку (адреса)</button>
+        <button type="button" id="add-point-map" class="btn-text">+ Поставити точку на карті</button>
+      </div>
+      <button type="button" id="build-route" class="btn-primary">
         <span>Розрахувати</span>
         <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
@@ -43,14 +46,15 @@
         <span class="value" id="res-duration">0 год</span>
       </div>
       <div id="legs-details" class="legs-list"></div>
+      <p class="result-disclaimer">Вартість перевезення розраховується індивідуально під ваше замовлення.</p>
     </div>
+
+    <p class="panel-disclaimer">Орієнтовна відстань і час. Точну вартість перевезення розрахуємо індивідуально.</p>
   </div>
 
   <div id="map"></div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&language=uk&callback=initMap">
-</script>
 {% endblock %}

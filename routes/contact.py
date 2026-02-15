@@ -54,13 +54,13 @@ def contact():
     if not check_rate_limit(ip):
         return jsonify({"error": "Забагато запитів. Спробуйте пізніше або зателефонуйте нам."}), 429
 
-    name = request.form.get("name", "").strip()
+    name = request.form.get("name", "").strip() or "Не вказано"
     phone_raw = request.form.get("phone", "").strip()
     email = request.form.get("email", "").strip() or "Не вказано"
-    message = request.form.get("message", "").strip()
+    message = request.form.get("message", "").strip() or "Не вказано"
 
-    if not name or not phone_raw or not message:
-        return jsonify({"error": "Будь ласка, заповніть обов'язкові поля."}), 400
+    if not phone_raw:
+        return jsonify({"error": "Введіть номер телефону."}), 400
 
     # Валідація телефону
     try:

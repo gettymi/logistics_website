@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app, url_for, Response
+from flask import Blueprint, render_template, url_for, Response
 
 main_bp = Blueprint('main', __name__)
 
@@ -9,15 +9,26 @@ def index():
 
 @main_bp.route("/calculate-km")
 def calculate_km():
-    key = current_app.config.get("GOOGLE_MAPS_API_KEY")
-    
-    # ПРИБРАЛИ блоки if/else з логами про ключ
-    # Ключ або є, або ні, користувачу лог про це не потрібен 100 разів
+    return render_template("calculate_km.html")
 
-    return render_template(
-        "calculate_km.html", 
-        google_api_key=key
-    )
+
+@main_bp.route("/thank-you")
+def thank_you():
+    """Сторінка подяки після відправки форми — для відстеження конверсий (GTM / Google Ads)."""
+    return render_template("thank_you.html")
+
+
+@main_bp.route("/services")
+def services():
+    """Сторінка «Послуги» — детальний опис послуг перевезень."""
+    return render_template("services.html")
+
+
+@main_bp.route("/zakordón")
+def zakordon():
+    """Сторінка «Закордон» — перевезення за кордон (Європа тощо)."""
+    return render_template("zakordon.html")
+
 
 # --- ROBOTS.TXT (Інструкція для Google) ---
 @main_bp.route('/robots.txt')
@@ -45,6 +56,10 @@ def sitemap():
     
     # 3. Калькулятор (пріоритет 0.9)
     pages.append([url_for('main.calculate_km', _external=True), '2025-01-06', '0.9'])
+    # 4. Послуги
+    pages.append([url_for('main.services', _external=True), '2025-01-06', '0.85'])
+    # 5. Закордон
+    pages.append([url_for('main.zakordon', _external=True), '2025-01-06', '0.85'])
 
     sitemap_xml = render_template('sitemap_template.xml', pages=pages)
     return Response(sitemap_xml, mimetype="application/xml")
