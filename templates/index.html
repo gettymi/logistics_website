@@ -43,7 +43,7 @@
 
 <!-- HERO -->
 <section class="hero-video-container">
-  <video autoplay muted loop playsinline class="bg-video" poster="{{ url_for('static', filename='img/video-poster.jpg') }}">
+  <video autoplay muted loop playsinline class="bg-video" poster="{{ url_for('static', filename='img/video-poster.jpg') }}" preload="metadata" disablePictureInPicture>
     <source src="{{ url_for('static', filename='videos/hero.mp4') }}" type="video/mp4">
     Ваш браузер не підтримує відео.
   </video>
@@ -123,26 +123,26 @@
     <div class="price-card">
       <h3 class="price-card-title">Мінімум</h3>
       <p class="price-card-desc">Подача + 2 години</p>
-      <p class="price-card-value"> 1199 <span class="price-unit">грн - виїзд</span></p>
+      <p class="price-card-value"> 2399 <span class="price-unit">грн - виїзд</span></p>
       <a href="{{ url_for('contact.contact') }}" class="price-card-btn">Замовити</a>
     </div>
     <div class="price-card price-card-featured">
       <span class="price-card-badge">Популярно</span>
       <h3 class="price-card-title">Стандарт</h3>
       <p class="price-card-desc">Бус, до 2,5 т</p>
-      <p class="price-card-value">від 400 <span class="price-unit">грн/год</span></p>
+      <p class="price-card-value">від 799 <span class="price-unit">грн/год</span></p>
       <a href="{{ url_for('contact.contact') }}" class="price-card-btn">Замовити</a>
     </div>
     <div class="price-card">
       <h3 class="price-card-title">Переїзд</h3>
       <p class="price-card-desc">Квартира під ключ</p>
-      <p class="price-card-value">від 550 <span class="price-unit">грн/год</span></p>
+      <p class="price-card-value">від 1099 <span class="price-unit">грн/год</span></p>
       <a href="{{ url_for('contact.contact') }}" class="price-card-btn">Замовити</a>
     </div>
     <div class="price-card">
       <h3 class="price-card-title">Вантажники</h3>
       <p class="price-card-desc">Допомога з завантаженням</p>
-      <p class="price-card-value">від 200 <span class="price-unit">грн/год</span></p>
+      <p class="price-card-value">від 399 <span class="price-unit">грн/год</span></p>
       <a href="{{ url_for('contact.contact') }}" class="price-card-btn">Замовити</a>
     </div>
   </div>
@@ -168,8 +168,8 @@
   </div>
 </section>
 
-<!-- Маніфест / Чому ми (Trust) — плавна поява при скролі -->
-<section class="trust-section">
+<!-- Маніфест / Чому ми (Trust) — поява та переливання при скролі -->
+<section class="trust-section" id="trust-section">
   <div class="container">
     <h2 class="trust-heading">Ми змінюємо ринок перевезень</h2>
     <div class="trust-grid">
@@ -221,6 +221,17 @@
       i = (i + 1) % slides.length;
       slides[i].classList.add('international-bg-slide--active');
     }, 6000);
+  }
+  var trust = document.getElementById('trust-section');
+  if (trust && 'IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) e.target.classList.add('trust-section--visible');
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    obs.observe(trust);
+  } else if (trust) {
+    trust.classList.add('trust-section--visible');
   }
 })();
 </script>

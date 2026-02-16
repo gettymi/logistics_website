@@ -1,34 +1,48 @@
-/* Робимо контейнер на всю висоту екрану мінус хедер */
-.map-wrapper {
-  position: relative;
+/* Десктоп: форма зліва, карта справа */
+.map-page {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  height: calc(100vh - 80px); /* 80px - висота хедера */
+  height: calc(100vh - 72px);
+  min-height: 400px;
   overflow: hidden;
+}
+
+.map-page-form {
+  flex-shrink: 0;
+  width: 420px;
+  max-width: 100%;
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.map-page-form .control-panel {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 1.5rem;
+  border-radius: 0;
+  box-shadow: none;
+  z-index: 0;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  backdrop-filter: none;
+}
+
+.map-page-map {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
 }
 
 #map {
   width: 100%;
   height: 100%;
-}
-
-/* Плаваюча панель — поверх карти (Leaflet використовує z-index 200–600) */
-.control-panel {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 380px;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 1.5rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  max-height: calc(100% - 40px);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
 }
 
 .panel-header h2 {
@@ -41,6 +55,119 @@
   margin: 5px 0 0;
   color: var(--text-muted);
   font-size: 0.9rem;
+}
+
+/* Тип транспорту: Бус / Самосвал */
+.vehicle-type {
+  margin-bottom: 1rem;
+}
+.vehicle-type-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+.vehicle-type-options {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.vehicle-type-options input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.vehicle-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  min-height: 44px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.vehicle-option:hover {
+  background: #e2e8f0;
+  color: var(--text-main);
+}
+.vehicle-type-options input:checked + .vehicle-option {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* Вибір послуги (залежить від типу транспорту) */
+.service-type {
+  margin-bottom: 1rem;
+}
+.service-type-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+.service-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.service-option-wrap {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0;
+}
+.service-option-wrap input[type="radio"] {
+  margin: 0 10px 0 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+.service-option {
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+.service-option-wrap:hover .service-option {
+  color: var(--primary);
+}
+
+.service-quantity-block {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.service-quantity-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+.service-quantity-input {
+  width: 100px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+.service-quantity-input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+.service-quantity-unit {
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 /* Інпути */
@@ -167,6 +294,39 @@
   gap: 0.5rem 1rem;
 }
 .control-panel .actions-row .btn-text { margin: 0; }
+.control-panel .actions-row--add .btn-text {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+.control-panel .actions-row--main {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+.control-panel .actions-row--main .btn-build {
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+}
+.control-panel .btn-clear {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 14px 18px;
+  min-height: 48px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.control-panel .btn-clear:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--text-main);
+}
 
 .control-panel .btn-text {
   background: #f1f5f9;
@@ -212,8 +372,9 @@
 
 /* Результати */
 .result-card {
+  margin-top: 1rem;
   background: #f8fafc;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   animation: fadeIn 0.3s;
@@ -227,6 +388,64 @@
 }
 .result-item .label { color: var(--text-muted); font-size: 0.9rem; }
 .result-item .value { font-weight: 800; color: var(--text-main); }
+.result-item--hourly-rate {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin: 0.5rem 0;
+}
+.result-item--hourly-rate .label {
+  font-weight: 700;
+  color: #92400e;
+  font-size: 0.95rem;
+}
+.result-item--hourly-rate .value {
+  font-weight: 900;
+  color: #92400e;
+  font-size: 1.1rem;
+}
+.result-item--price {
+  background: #f0f9ff;
+  border: 2px solid #bae6fd;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem 0 0.5rem;
+}
+.result-item--price .label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+.price-label-text {
+  color: var(--text-main);
+}
+.price-label-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.result-item--price .value {
+  color: var(--primary);
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+.result-breakdown {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
 
 .legs-list {
   margin-top: 1rem;
@@ -244,6 +463,15 @@
   color: var(--text-muted);
   line-height: 1.5;
 }
+.result-disclaimer--note {
+  font-weight: 600;
+  color: var(--text-main);
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
 .panel-disclaimer { margin-top: 0.5rem; }
 
 .input-row-map .route-input[readonly] {
@@ -260,18 +488,85 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Адаптив для мобільних */
+/* Адаптив для мобільних — карта зверху, форма знизу (bottom sheet) */
 @media (max-width: 768px) {
-  .map-wrapper {
-    flex-direction: column-reverse;
+  .map-page {
+    flex-direction: column;
+    height: calc(100vh - 72px);
   }
-  .control-panel {
-    position: relative;
-    top: 0; left: 0;
+  .map-page-form {
+    order: 2;
     width: 100%;
-    max-height: 50vh;
+    max-height: min(55vh, 420px);
+    min-height: 200px;
+    flex-shrink: 0;
+    background: #fff;
+    border-right: none;
+    border-top: 1px solid #e2e8f0;
+  }
+  .map-page-form .control-panel {
+    border-bottom: none;
     border-radius: 20px 20px 0 0;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-    margin-top: -20px; /* Трохи наїжджає на карту */
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.25rem 1.5rem;
+    padding-top: 0.75rem;
+  }
+  .map-page-form .control-panel::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    margin: 0.5rem auto 0.75rem;
+  }
+  .map-page-map {
+    order: 1;
+    flex: 1;
+    min-height: 45vh;
+  }
+  .panel-header h2 {
+    font-size: 1.25rem;
+  }
+  .panel-header p {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  .route-input {
+    padding: 14px 12px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+  .control-panel .btn-text,
+  .control-panel .btn-primary {
+    min-height: 48px;
+    padding: 14px 18px;
+    font-size: 1rem;
+  }
+  .control-panel .actions-row {
+    gap: 0.5rem;
+  }
+  .control-panel .actions-row .btn-text {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+  .remove-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .autocomplete-dropdown {
+    max-height: 50vh;
+    font-size: 1rem;
+  }
+  .autocomplete-item {
+    padding: 14px 16px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
   }
 }

@@ -19,6 +19,7 @@
   var autocompleteDropdown = null;
   var autocompleteTimer = null;
   var lastSearchAbort = null;
+  var currentRouteData = null; // { distance: meters, duration: seconds }
 
   function initMap() {
     if (map) return;
@@ -40,6 +41,32 @@
     document.getElementById("add-point")?.addEventListener("click", addWayPoint);
     document.getElementById("add-point-map")?.addEventListener("click", enableMapClickMode);
     document.getElementById("build-route")?.addEventListener("click", buildRoute);
+    document.getElementById("clear-route")?.addEventListener("click", clearRoute);
+
+    var vehicleRadios = document.querySelectorAll('input[name="vehicle"]');
+    vehicleRadios.forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        syncServicePanel();
+        recalculatePrice();
+      });
+    });
+    syncServicePanel();
+    var samosvalServiceRadios = document.querySelectorAll('#services-samosval input[name="service"]');
+    samosvalServiceRadios.forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        syncSamosvalQuantityBlock();
+        recalculatePrice();
+      });
+    });
+    var busServiceRadios = document.querySelectorAll('#services-bus input[name="service"]');
+    busServiceRadios.forEach(function (radio) {
+      radio.addEventListener("change", recalculatePrice);
+    });
+    var quantityInput = document.getElementById("samosval-quantity");
+    if (quantityInput) {
+      quantityInput.addEventListener("input", recalculatePrice);
+      quantityInput.addEventListener("change", recalculatePrice);
+    }
 
     map.on("click", onMapClick);
 
@@ -129,6 +156,13 @@
 
     input.addEventListener("input", function () {
       var row = input.closest(".input-row");
+      if (row && row.getAttribute("data-lat") != null) {
+        row.removeAttribute("data-lat");
+        row.removeAttribute("data-lng");
+        row.classList.remove("input-row-map");
+        if (row._mapMarker && row._mapMarker.remove) row._mapMarker.remove();
+        row._mapMarker = null;
+      }
       if (row && row.classList.contains("input-row-map")) return;
       if (autocompleteTimer) clearTimeout(autocompleteTimer);
       var value = input.value.trim();
@@ -218,7 +252,42 @@
     }
     var lat = e.latlng.lat;
     var lng = e.latlng.lng;
+    var container = document.getElementById("points-container");
+    var rows = Array.from(container.querySelectorAll(".input-row"));
+    if (rows.length === 0) return;
+    var firstRow = rows[0];
+    var lastRow = rows[rows.length - 1];
+    function rowIsEmpty(row) {
+      var inp = row.querySelector(".route-input");
+      var hasCoords = row.getAttribute("data-lat") != null && row.getAttribute("data-lng") != null;
+      var hasValue = inp && inp.value.trim().length > 0;
+      return !hasCoords && !hasValue;
+    }
+    if (rowIsEmpty(firstRow)) {
+      fillRowWithMapPoint(firstRow, lat, lng);
+      return;
+    }
+    if (rows.length >= 2 && rowIsEmpty(lastRow)) {
+      fillRowWithMapPoint(lastRow, lat, lng);
+      return;
+    }
     addRowFromMapClick(lat, lng);
+  }
+
+  function fillRowWithMapPoint(row, lat, lng) {
+    if (row._mapMarker && row._mapMarker.remove) row._mapMarker.remove();
+    row.setAttribute("data-lat", lat);
+    row.setAttribute("data-lng", lng);
+    row.classList.add("input-row-map");
+    var inp = row.querySelector(".route-input");
+    if (!inp) return;
+    inp.value = "Точка на карті…";
+    reverseGeocode(lat, lng).then(function (label) {
+      inp.value = label;
+    });
+    var marker = L.marker([lat, lng]).addTo(markersLayer);
+    marker.bindPopup(inp.value || "Точка на карті");
+    row._mapMarker = marker;
   }
 
   function addRowFromMapClick(lat, lng) {
@@ -239,16 +308,95 @@
     reverseGeocode(lat, lng).then(function (label) {
       inp.value = label;
     });
+    var marker = L.marker([lat, lng]).addTo(markersLayer);
+    marker.bindPopup(inp.value || "Точка на карті");
+    div._mapMarker = marker;
     div.querySelector(".remove-btn").addEventListener("click", function () {
+      if (div._mapMarker && div._mapMarker.remove) div._mapMarker.remove();
       div.remove();
     });
     container.insertBefore(div, lastRow);
 
-    var marker = L.marker([lat, lng]).addTo(markersLayer);
-    marker.bindPopup(inp.value || "Точка на карті");
     inp.addEventListener("change", function () {
       marker.getPopup().setContent(inp.value || "Точка на карті");
     });
+  }
+
+  function syncServicePanel() {
+    var vehicleRadio = document.querySelector('input[name="vehicle"]:checked');
+    var vehicle = vehicleRadio ? vehicleRadio.value : "bus";
+    var busPanel = document.getElementById("services-bus");
+    var samosvalPanel = document.getElementById("services-samosval");
+    var quantityBlock = document.getElementById("samosval-quantity-block");
+    if (busPanel && samosvalPanel) {
+      if (vehicle === "samosval") {
+        busPanel.style.display = "none";
+        samosvalPanel.style.display = "flex";
+        var firstSamosval = samosvalPanel.querySelector('input[name="service"]');
+        if (firstSamosval) firstSamosval.checked = true;
+        if (quantityBlock) quantityBlock.style.display = "flex";
+        syncSamosvalQuantityBlock();
+      } else {
+        busPanel.style.display = "flex";
+        samosvalPanel.style.display = "none";
+        var firstBus = busPanel.querySelector('input[name="service"]');
+        if (firstBus) firstBus.checked = true;
+        if (quantityBlock) quantityBlock.style.display = "none";
+      }
+    }
+  }
+
+  function syncSamosvalQuantityBlock() {
+    var quantityBlock = document.getElementById("samosval-quantity-block");
+    var labelEl = document.getElementById("samosval-quantity-label");
+    var unitEl = document.getElementById("samosval-quantity-unit");
+    var serviceRadio = document.querySelector('#services-samosval input[name="service"]:checked');
+    if (!quantityBlock || !labelEl || !unitEl) return;
+    var serviceId = serviceRadio ? serviceRadio.value : "samosval_sand";
+    var config = typeof PriceCalculator !== "undefined" && PriceCalculator.getDumpServiceConfig && PriceCalculator.getDumpServiceConfig()[serviceId];
+    if (config && config.unit) {
+      quantityBlock.style.display = "flex";
+      labelEl.textContent = "Кількість (" + (config.unitLabel || "") + ")";
+      unitEl.textContent = config.unitLabel || "";
+      unitEl.style.display = "";
+    } else {
+      quantityBlock.style.display = "none";
+      unitEl.style.display = "none";
+    }
+  }
+
+  function clearRoute() {
+    var container = document.getElementById("points-container");
+    if (!container) return;
+    var rows = Array.from(container.querySelectorAll(".input-row"));
+    rows.forEach(function (row, i) {
+      if (row._mapMarker && row._mapMarker.remove) row._mapMarker.remove();
+      row._mapMarker = null;
+      if (i > 1) row.remove();
+    });
+    var first = rows[0];
+    var second = rows[1];
+    if (first) {
+      var inp1 = first.querySelector(".route-input");
+      if (inp1) { inp1.value = ""; inp1.readOnly = false; }
+      first.removeAttribute("data-lat");
+      first.removeAttribute("data-lng");
+      first.classList.remove("input-row-map");
+    }
+    if (second) {
+      var inp2 = second.querySelector(".route-input");
+      if (inp2) { inp2.value = ""; inp2.readOnly = false; }
+      second.removeAttribute("data-lat");
+      second.removeAttribute("data-lng");
+      second.classList.remove("input-row-map");
+    }
+    markersLayer.clearLayers();
+    routeLayer.clearLayers();
+    currentRouteData = null;
+    var resCard = document.getElementById("route-result");
+    if (resCard) resCard.style.display = "none";
+    var qInput = document.getElementById("samosval-quantity");
+    if (qInput) qInput.value = "";
   }
 
   function addWayPoint() {
@@ -311,11 +459,11 @@
     markersLayer.clearLayers();
     routeLayer.clearLayers();
 
-    resolvePoints(points)
+    resolvePoints(filled)
       .then(function (coords) {
         var missing = coords.findIndex(function (c) { return !c; });
         if (missing >= 0) {
-          var label = points[missing].label || points[missing].value || "Точка " + (missing + 1);
+          var label = filled[missing].label || filled[missing].value || "Точка " + (missing + 1);
           alert('Точку "' + label + '" не знайдено. Уточніть написання або поставте точку на карті.');
           return;
         }
@@ -352,13 +500,14 @@
 
         map.fitBounds(line.getBounds(), { padding: [40, 40] });
 
+        currentRouteData = { distance: route.distance, duration: route.duration };
         var distKm = (route.distance / 1000).toFixed(1);
         var durationSec = route.duration;
         var hours = Math.floor(durationSec / 3600);
         var minutes = Math.floor((durationSec % 3600) / 60);
         var timeStr = hours > 0 ? hours + " год " + minutes + " хв" : minutes + " хв";
 
-        var labels = points.map(function (p) { return p.label || p.value || ""; });
+        var labels = filled.map(function (p) { return p.label || p.value || ""; });
         var legs = route.legs || [];
         var legsHtml = legs
           .map(function (leg, i) {
@@ -369,15 +518,129 @@
           })
           .join("");
 
+        var vehicleRadio = document.querySelector('input[name="vehicle"]:checked');
+        var vehicleValue = vehicleRadio ? vehicleRadio.value : "bus";
+        var vehicleLabel = vehicleValue === "samosval" ? "Самосвал" : "Бус";
+        var resVehicle = document.getElementById("res-vehicle");
+        if (resVehicle) resVehicle.textContent = vehicleLabel;
+        var serviceRadio = document.querySelector('input[name="service"]:checked');
+        var serviceLabel = "";
+        if (serviceRadio) {
+          var opt = serviceRadio.closest("label") && serviceRadio.closest("label").querySelector(".service-option");
+          if (opt) serviceLabel = opt.textContent.trim();
+        }
+        var resService = document.getElementById("res-service");
+        if (resService) resService.textContent = serviceLabel || "—";
         document.getElementById("res-distance").textContent = distKm + " км";
         document.getElementById("res-duration").textContent = timeStr;
         document.getElementById("legs-details").innerHTML = legsHtml || "";
+
+        if (typeof PriceCalculator !== "undefined") {
+          var serviceType = PriceCalculator.serviceTypeFromVehicle(vehicleValue);
+          var options;
+          if (serviceType === "DUMP_TRUCK") {
+            var dumpServiceRadio = document.querySelector('#services-samosval input[name="service"]:checked');
+            var dumpServiceId = dumpServiceRadio ? dumpServiceRadio.value : "samosval_sand";
+            var qInput = document.getElementById("samosval-quantity");
+            var quantity = qInput && qInput.value !== "" ? parseFloat(qInput.value) : null;
+            if (quantity !== null && isNaN(quantity)) quantity = null;
+            options = { dumpTruckServiceId: dumpServiceId, quantity: quantity };
+          } else if (serviceType === "BUS") {
+            var busServiceRadio = document.querySelector('#services-bus input[name="service"]:checked');
+            var busServiceId = busServiceRadio ? busServiceRadio.value : "bus_taxi";
+            options = { busServiceId: busServiceId };
+          }
+          var priceResult = PriceCalculator.calculate(route.distance, route.duration, serviceType, options);
+          var resPrice = document.getElementById("res-price");
+          if (resPrice) resPrice.textContent = priceResult.total + " грн";
+          var resBreakdown = document.getElementById("res-price-breakdown");
+          if (resBreakdown) {
+            resBreakdown.textContent = priceResult.breakdown;
+            resBreakdown.style.display = "block";
+          }
+          var hourlyRateItem = document.getElementById("hourly-rate-item");
+          var resHourlyRate = document.getElementById("res-hourly-rate");
+          if (hourlyRateItem && resHourlyRate) {
+            var serviceId = serviceType === "BUS" ? (options && options.busServiceId) || "bus_taxi" : (options && options.dumpTruckServiceId) || "samosval_sand";
+            var hourlyRate = PriceCalculator.getHourlyRate(serviceType, serviceId);
+            if (hourlyRate) {
+              resHourlyRate.textContent = hourlyRate + " грн/год";
+              hourlyRateItem.style.display = "flex";
+            } else {
+              hourlyRateItem.style.display = "none";
+            }
+          }
+        } else {
+          var resPrice = document.getElementById("res-price");
+          if (resPrice) resPrice.textContent = "—";
+          var resBreakdown = document.getElementById("res-price-breakdown");
+          if (resBreakdown) resBreakdown.style.display = "none";
+        }
+
         resCard.style.display = "block";
       })
       .catch(function (err) {
         console.error(err);
         alert("Помилка побудови маршруту. Спробуйте пізніше або перевірте адреси.");
       });
+  }
+
+  function recalculatePrice() {
+    if (!currentRouteData) return;
+    var resCard = document.getElementById("route-result");
+    if (!resCard || resCard.style.display === "none") return;
+
+    var vehicleRadio = document.querySelector('input[name="vehicle"]:checked');
+    var vehicleValue = vehicleRadio ? vehicleRadio.value : "bus";
+    var vehicleLabel = vehicleValue === "samosval" ? "Самосвал" : "Бус";
+    var resVehicle = document.getElementById("res-vehicle");
+    if (resVehicle) resVehicle.textContent = vehicleLabel;
+
+    var serviceRadio = document.querySelector('input[name="service"]:checked');
+    var serviceLabel = "";
+    if (serviceRadio) {
+      var opt = serviceRadio.closest("label") && serviceRadio.closest("label").querySelector(".service-option");
+      if (opt) serviceLabel = opt.textContent.trim();
+    }
+    var resService = document.getElementById("res-service");
+    if (resService) resService.textContent = serviceLabel || "—";
+
+    if (typeof PriceCalculator !== "undefined") {
+      var serviceType = PriceCalculator.serviceTypeFromVehicle(vehicleValue);
+      var options;
+      if (serviceType === "DUMP_TRUCK") {
+        var dumpServiceRadio = document.querySelector('#services-samosval input[name="service"]:checked');
+        var dumpServiceId = dumpServiceRadio ? dumpServiceRadio.value : "samosval_sand";
+        var qInput = document.getElementById("samosval-quantity");
+        var quantity = qInput && qInput.value !== "" ? parseFloat(qInput.value) : null;
+        if (quantity !== null && isNaN(quantity)) quantity = null;
+        options = { dumpTruckServiceId: dumpServiceId, quantity: quantity };
+      } else if (serviceType === "BUS") {
+        var busServiceRadio = document.querySelector('#services-bus input[name="service"]:checked');
+        var busServiceId = busServiceRadio ? busServiceRadio.value : "bus_taxi";
+        options = { busServiceId: busServiceId };
+      }
+      var priceResult = PriceCalculator.calculate(currentRouteData.distance, currentRouteData.duration, serviceType, options);
+      var resPrice = document.getElementById("res-price");
+      if (resPrice) resPrice.textContent = priceResult.total + " грн";
+      var resBreakdown = document.getElementById("res-price-breakdown");
+      if (resBreakdown) {
+        resBreakdown.textContent = priceResult.breakdown;
+        resBreakdown.style.display = "block";
+      }
+      var hourlyRateItem = document.getElementById("hourly-rate-item");
+      var resHourlyRate = document.getElementById("res-hourly-rate");
+      if (hourlyRateItem && resHourlyRate) {
+        var serviceId = serviceType === "BUS" ? (options && options.busServiceId) || "bus_taxi" : (options && options.dumpTruckServiceId) || "samosval_sand";
+        var hourlyRate = PriceCalculator.getHourlyRate(serviceType, serviceId);
+        if (hourlyRate) {
+          resHourlyRate.textContent = hourlyRate + " грн/год";
+          hourlyRateItem.style.display = "flex";
+        } else {
+          hourlyRateItem.style.display = "none";
+        }
+      }
+    }
   }
 
   if (document.readyState === "loading") {
