@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Службові сторінки — не індексувати
+Disallow: /thank-you
+
+Sitemap: https://vezemo24.com/sitemap.xml

@@ -15,6 +15,7 @@
   <meta name="keywords" content="{% block keywords %}вантажні перевезення київ, переїзд київ, вантажне таксі київ, самосвал київ, вантажники київ, київська область{% endblock %}">
 
   <link rel="canonical" href="{{ request.base_url }}" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ url_for('main.sitemap', _external=True) }}">
   <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{{ self.description() }}{% endblock %}">
   <meta property="og:type" content="website">

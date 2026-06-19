@@ -1,6 +1,17 @@
+from datetime import date
+
 from flask import Blueprint, render_template, url_for, Response
 
 main_bp = Blueprint('main', __name__)
+
+# Публічні сторінки для sitemap (без thank-you — сторінка конверсії)
+SITEMAP_PAGES = [
+    {"endpoint": "main.index", "priority": "1.0", "changefreq": "weekly"},
+    {"endpoint": "main.calculate_km", "priority": "0.9", "changefreq": "weekly"},
+    {"endpoint": "main.services", "priority": "0.85", "changefreq": "monthly"},
+    {"endpoint": "main.zakordon", "priority": "0.85", "changefreq": "monthly"},
+    {"endpoint": "contact.contact", "priority": "0.8", "changefreq": "monthly"},
+]
 
 @main_bp.route("/")
 def index():
@@ -30,36 +41,34 @@ def zakordon():
     return render_template("zakordon.html")
 
 
-# --- ROBOTS.TXT (Інструкція для Google) ---
-@main_bp.route('/robots.txt')
+@main_bp.route("/robots.txt")
 def robots():
-    # Дозволяємо все, вказуємо шлях до sitemap
+    """robots.txt — інструкції для пошукових роботів."""
+    sitemap_url = url_for("main.sitemap", _external=True)
     lines = [
         "User-agent: *",
         "Allow: /",
-        f"Sitemap: {url_for('main.sitemap', _external=True)}"
+        "",
+        "# Службові сторінки — не індексувати",
+        "Disallow: /thank-you",
+        "",
+        f"Sitemap: {sitemap_url}",
     ]
-    return Response("\n".join(lines), mimetype="text/plain")
+    return Response("\n".join(lines) + "\n", mimetype="text/plain; charset=utf-8")
 
-# --- SITEMAP.XML (Карта сайту) ---
-@main_bp.route('/sitemap.xml')
+
+@main_bp.route("/sitemap.xml")
 def sitemap():
-    """Генерує XML карту для Google"""
-    pages = []
-    
-    # Вказуємо всі наші статичні сторінки
-    # 1. Головна (пріоритет 1.0)
-    pages.append([url_for('main.index', _external=True), '2025-01-06', '1.0'])
-    
-    # 2. Контакти (пріоритет 0.8)
-    pages.append([url_for('contact.contact', _external=True), '2025-01-06', '0.8'])
-    
-    # 3. Калькулятор (пріоритет 0.9)
-    pages.append([url_for('main.calculate_km', _external=True), '2025-01-06', '0.9'])
-    # 4. Послуги
-    pages.append([url_for('main.services', _external=True), '2025-01-06', '0.85'])
-    # 5. Закордон
-    pages.append([url_for('main.zakordon', _external=True), '2025-01-06', '0.85'])
-
-    sitemap_xml = render_template('sitemap_template.xml', pages=pages)
-    return Response(sitemap_xml, mimetype="application/xml")
+    """Динамічна XML-карта сайту для Google, Bing тощо."""
+    lastmod = date.today().isoformat()
+    pages = [
+        {
+            "loc": url_for(item["endpoint"], _external=True),
+            "lastmod": lastmod,
+            "changefreq": item["changefreq"],
+            "priority": item["priority"],
+        }
+        for item in SITEMAP_PAGES
+    ]
+    sitemap_xml = render_template("sitemap_template.xml", pages=pages)
+    return Response(sitemap_xml, mimetype="application/xml; charset=utf-8")
